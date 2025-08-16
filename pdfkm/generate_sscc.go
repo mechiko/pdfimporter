@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"pdfimporter/domain/models/application"
 	"regexp"
-	"strings"
 
 	"pdfimporter/gs1sscc"
 )
@@ -20,18 +19,18 @@ func (k *Pdf) GenerateSSCC(i int, model *application.Application) (string, error
 		return "", fmt.Errorf("application model is nil")
 	}
 	prefix := model.SsccPrefix
-	// Must be 1–10 digits
-	if matched, _ := regexp.MatchString(`^\d{1,10}$`, prefix); !matched {
-		return "", fmt.Errorf("invalid SsccPrefix %q: must be 1–10 digits", prefix)
+	// Must be 1–12 digits
+	if matched, _ := regexp.MatchString(`^\d{1,12}$`, prefix); !matched {
+		return "", fmt.Errorf("invalid SsccPrefix %q: must be 1–12 digits", prefix)
 	}
 	// Left-zero pad or truncate to 10 digits
-	switch {
-	case len(prefix) < 10:
-		prefix = strings.Repeat("0", 10-len(prefix)) + prefix
-	case len(prefix) > 10:
-		prefix = prefix[:10]
-	}
-	code := prefix + fmt.Sprintf("%07d", i)
+	// switch {
+	// case len(prefix) < 12:
+	// 	prefix = strings.Repeat("0", 12-len(prefix)) + prefix
+	// case len(prefix) > 12:
+	// 	prefix = prefix[:12]
+	// }
+	code := fmt.Sprintf("%012.12s", prefix) + fmt.Sprintf("%05d", i)
 	sscc := gs1sscc.Sscc(code)
 	if sscc == "wrong lenght code" {
 		return "", fmt.Errorf("gs1sscc.Sscc returned error for code %q", code)

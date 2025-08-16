@@ -21,8 +21,8 @@ import (
 var fileExe string
 var dir string
 
-// если local true то папка создается локально
-var local = flag.Bool("local", false, "")
+// если home true то папка создается локально
+var home = flag.Bool("home", false, "")
 var file = flag.String("file", "", "file to parse xlsx")
 
 func init() {
@@ -46,7 +46,7 @@ func errMessageExit(title string, errDescription string) {
 }
 
 func main() {
-	cfg, err := config.New("", !*local)
+	cfg, err := config.New("", *home)
 	if err != nil {
 		errMessageExit("ошибка конфигурации", err.Error())
 	}

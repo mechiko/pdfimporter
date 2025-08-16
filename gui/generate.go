@@ -2,6 +2,7 @@ package gui
 
 import (
 	"fmt"
+	"pdfimporter/reductor"
 
 	"github.com/mechiko/utility"
 )
@@ -37,6 +38,20 @@ func (a *GuiApp) generate() {
 	}
 	a.Options().SsccStartNumber = a.pdf.LastSSCC()
 	if err := a.SaveOptions("ssccstartnumber", a.pdf.LastSSCC()); err != nil {
+		a.Logger().Errorf("gui generate %v", err)
+		a.SendError(fmt.Sprintf("gui generate %v", err))
+		a.stateStart <- struct{}{}
+		return
+	}
+	modelFinal, err := GetModel()
+	if err != nil {
+		a.Logger().Errorf("gui generate %v", err)
+		a.SendError(fmt.Sprintf("gui generate %v", err))
+		a.stateStart <- struct{}{}
+		return
+	}
+	modelFinal.SsccStartNumber = a.pdf.LastSSCC()
+	if err := reductor.Instance().SetModel(modelFinal, false); err != nil {
 		a.Logger().Errorf("gui generate %v", err)
 		a.SendError(fmt.Sprintf("gui generate %v", err))
 		a.stateStart <- struct{}{}

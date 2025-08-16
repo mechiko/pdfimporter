@@ -2,7 +2,7 @@ package config
 
 var TomlConfig = []byte(`
 # This is a TOML document.
-ssccprefix = "1234567"
+ssccprefix = "146024436369"
 ssccstartnumber = 1
 perpallet = 24
 

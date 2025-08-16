@@ -51,8 +51,6 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string) (core.Page, erro
 			cols := make([]core.Col, len(rowTempl))
 			// две строки с колонками
 			for i, rowSingle := range rowTempl {
-				value := strings.ReplaceAll(rowSingle.Value, "@kod", kod)
-				value = strings.ReplaceAll(value, "@ser", ser)
 				if rowSingle.DataMatrix != "" {
 					if rowSingle.ImageDebug {
 						cols[i] = code.NewMatrixCol(rowSingle.ColWidth, kod, rowSingle.PropsRect()).WithStyle(colStyle)
@@ -90,6 +88,14 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string) (core.Page, erro
 					} else if rowSingle.Value == "" {
 						cols[i] = col.New(rowSingle.ColWidth)
 					} else {
+						value := strings.ReplaceAll(rowSingle.Value, "@ser", ser)
+						// if sscc
+						if len(kod) == 20 {
+							kod1 := fmt.Sprintf("(%s)%s", kod[:2], kod[2:])
+							value = strings.ReplaceAll(value, "@kod", kod1)
+						} else {
+							value = strings.ReplaceAll(value, "@kod", kod)
+						}
 						cols[i] = text.NewCol(rowSingle.ColWidth, value, rowSingle.PropsText())
 					}
 				}
