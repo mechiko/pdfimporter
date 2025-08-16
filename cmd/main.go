@@ -91,10 +91,10 @@ func main() {
 	}
 
 	appModel, err := application.New(app)
-	appModel.File = *file
 	if err != nil {
 		errProcessExit("Ошибка получения логера для редуктора", err.Error())
 	}
+	appModel.File = *file
 	if err := reductor.Instance().SetModel(appModel, false); err != nil {
 		errProcessExit("Ошибка редуктора", err.Error())
 	}

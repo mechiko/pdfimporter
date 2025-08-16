@@ -36,7 +36,8 @@ func New(cfgName string, inUserHome bool) (cfg *Config, err error) {
 		configName = "config"
 	}
 
-	viperOrigin := viper.GetViper()
+	// viperOrigin := viper.GetViper()
+	viperOrigin := viper.New()
 	cfg = &Config{
 		Viper:    viperOrigin,
 		HomePath: ".",

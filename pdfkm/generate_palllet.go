@@ -11,9 +11,15 @@ import (
 // count количество в одной палетте
 func (k *Pdf) GeneratePallet(model *application.Application) error {
 	indexPallet := 0
+	if k.Pallet == nil {
+		k.Pallet = make(map[string][]*utility.CisInfo)
+	}
 	for {
 		k.lastSSCC = model.SsccStartNumber + indexPallet
-		palet := k.GenerateSSCC(k.lastSSCC, model)
+		palet, err := k.GenerateSSCC(k.lastSSCC, model)
+		if err != nil {
+			return fmt.Errorf("failed to generate SSCC: %w", err)
+		}
 		if _, ok := k.Pallet[palet]; ok {
 			return fmt.Errorf("palet %s alredy present", palet)
 		}

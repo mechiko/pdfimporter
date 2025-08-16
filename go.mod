@@ -1,18 +1,18 @@
 module pdfimporter
 
-go 1.24.6
+go 1.24
 
 require (
 	github.com/google/uuid v1.6.0
 	github.com/mechiko/maroto/v2 v2.2.3
-	github.com/mechiko/utility v0.0.0-20250813091156-5a90ea8f274a
+	github.com/mechiko/utility v0.0.0-20250816182359-1eded379613e
 	github.com/spf13/viper v1.20.1
 	go.uber.org/zap v1.27.0
 	modernc.org/tk9.0 v1.71.2
 )
 
 require (
-	github.com/TheTitanrain/w32 v0.0.0-20200114052255-2654d97dbd3d // indirect
+	github.com/TheTitanrain/w32 v0.0.0-20180517000239-4f5cfb03fabf // indirect
 	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
@@ -45,7 +45,7 @@ require (
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect
 	golang.org/x/image v0.26.0 // indirect
-	golang.org/x/net v0.40.0 // indirect
+	golang.org/x/net v0.39.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

@@ -4,7 +4,13 @@ import "fmt"
 
 func Sscc(code string) (out string) {
 	if len(code) != 17 {
-		return "wrong lenght code"
+		return "wrong length code"
+	}
+	// Validate that code contains only digits
+	for i, ch := range code {
+		if ch < '0' || ch > '9' {
+			return fmt.Sprintf("invalid character '%c' at position %d", ch, i)
+		}
 	}
 	sum := 0
 	for i := range code {

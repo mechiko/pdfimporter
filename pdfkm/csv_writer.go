@@ -56,7 +56,7 @@ func saveTxtCustom(name string, data [][]string) error {
 	defer file.Close()
 	for _, line := range data {
 		if len(line) != 2 {
-			return fmt.Errorf("строка для записи в файл долна содержать две строки ")
+			return fmt.Errorf("строка для записи в файл должна содержать две строки ")
 		}
 		_, err := file.WriteString(line[0] + "\t" + line[1] + "\n")
 		if err != nil {

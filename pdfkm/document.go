@@ -23,11 +23,11 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 
 	start := time.Now()
 
-	// err = pdfDocument.BuildPages(true, true)
-	// if err != nil {
-	// 	return "", fmt.Errorf("%w", err)
-	// }
-	step := 99.00 / float64(len(k.Cis)+len(k.Pallet))
+	totalItems := len(k.Cis) + len(k.Pallet)
+	step := 0.0
+	if totalItems > 0 {
+		step = 99.0 / float64(totalItems)
+	}
 	palets := make([]string, 0, len(k.Pallet))
 	for k2 := range k.Pallet {
 		palets = append(palets, k2)

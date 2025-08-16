@@ -57,6 +57,10 @@ func (a *GuiApp) makeInputs(model *application.Application) {
 		ff, err := utility.DialogOpenFile([]utility.FileType{utility.Csv, utility.All}, "", ".")
 		if err != nil {
 			a.logg("", err.Error())
+			return
+		}
+		if ff == "" { // user canceled
+			return
 		}
 		go a.openFile(ff)
 	}))

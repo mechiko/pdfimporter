@@ -74,7 +74,7 @@ func (a *Assets) load() (err error) {
 		if !file.IsDir() {
 			name := strings.ToLower(file.Name())
 			ext := filepath.Ext(name)
-			if len(ext) > 3 {
+			if len(ext) > 1 {
 				ext = ext[1:]
 			}
 			base := name[:len(name)-len(filepath.Ext(name))]

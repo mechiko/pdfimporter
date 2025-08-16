@@ -157,7 +157,11 @@ func (a *GuiApp) tick() {
 				label = file
 			}
 		}
-		a.fileLbl = a.inputFrame.TLabel(tk.Txt(label))
+		if a.fileLbl == nil {
+			a.fileLbl = a.inputFrame.TLabel(tk.Txt(label))
+		} else {
+			a.fileLbl.Configure(tk.Txt(label))
+		}
 		a.progres.Configure(tk.Value(0))
 		a.fileBtn.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("enabled"))

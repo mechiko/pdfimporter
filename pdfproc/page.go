@@ -60,7 +60,6 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string) (core.Page, erro
 						cols[i] = code.NewMatrixCol(rowSingle.ColWidth, kod, rowSingle.PropsRect())
 					}
 				} else if rowSingle.Bar != "" {
-					cols[i] = code.NewBarCol(rowSingle.ColWidth, kod, rowSingle.PropsBar())
 					if rowSingle.ImageDebug {
 						cols[i] = code.NewBarCol(rowSingle.ColWidth, kod, rowSingle.PropsBar()).WithStyle(colStyle)
 					} else {

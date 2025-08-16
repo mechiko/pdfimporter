@@ -15,7 +15,7 @@ func (a *GuiApp) openFile(file string) {
 	}()
 	model, err := GetModel()
 	if err != nil {
-		a.Logger().Errorf("gui openFile %w", err)
+		a.Logger().Errorf("gui openFile %v", err)
 		a.SendError(fmt.Sprintf("gui openFile %v", err))
 		a.stateStart <- struct{}{}
 		return
@@ -25,7 +25,7 @@ func (a *GuiApp) openFile(file string) {
 	model.File = file
 	err = reductor.Instance().SetModel(model, false)
 	if err != nil {
-		a.Logger().Errorf("gui openFile SetModel %w", err)
+		a.Logger().Errorf("gui openFile SetModel %v", err)
 		a.SendError(fmt.Sprintf("ошибка записи модели в редуктор: %s", err.Error()))
 		a.stateStart <- struct{}{}
 		return
@@ -37,7 +37,7 @@ func (a *GuiApp) openFile(file string) {
 	a.logClear <- struct{}{}
 	a.SendLog("считываем файл КМ")
 	if err := a.pdf.ReadCSV(model); err != nil {
-		a.Logger().Errorf("gui openFile ReadCSV %w", err)
+		a.Logger().Errorf("gui openFile ReadCSV %v", err)
 		a.SendError(fmt.Sprintf("ошибка загрузки файла: %s", err.Error()))
 		a.stateStart <- struct{}{}
 		return

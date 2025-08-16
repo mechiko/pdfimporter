@@ -17,34 +17,34 @@ func (a *GuiApp) generate() {
 	a.SendLog("обрабатываем файлы...")
 	model, err := GetModel()
 	if err != nil {
-		a.Logger().Errorf("gui generate %w", err)
+		a.Logger().Errorf("gui generate %v", err)
 		a.SendError(fmt.Sprintf("gui generate %v", err))
 		a.stateStart <- struct{}{}
 		return
 	}
 	if err := a.pdf.GeneratePallet(model); err != nil {
-		a.Logger().Errorf("gui generate %w", err)
+		a.Logger().Errorf("gui generate %v", err)
 		a.SendError(fmt.Sprintf("gui generate %v", err))
 		a.stateStart <- struct{}{}
 		return
 	}
 	fileName, err := a.pdf.Document(model, a.progresCh)
 	if err != nil {
-		a.Logger().Errorf("gui generate %w", err)
+		a.Logger().Errorf("gui generate %v", err)
 		a.SendError(fmt.Sprintf("gui generate %v", err))
 		a.stateStart <- struct{}{}
 		return
 	}
 	a.Options().SsccStartNumber = a.pdf.LastSSCC()
 	if err := a.SaveOptions("ssccstartnumber", a.pdf.LastSSCC()); err != nil {
-		a.Logger().Errorf("gui generate %w", err)
+		a.Logger().Errorf("gui generate %v", err)
 		a.SendError(fmt.Sprintf("gui generate %v", err))
 		a.stateStart <- struct{}{}
 		return
 	}
 	a.SendLog(fileName)
 	if csvName, err := a.pdf.PaletSave("pallets"); err != nil {
-		a.Logger().Errorf("gui save palet csv %w", err)
+		a.Logger().Errorf("gui save palet csv %v", err)
 		a.SendError(fmt.Sprintf("gui save palet csv %v", err))
 		a.stateStart <- struct{}{}
 		return
