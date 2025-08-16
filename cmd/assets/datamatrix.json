@@ -1,0 +1,252 @@
+{
+  "Name": "80x60 Datamatrix",
+  "PageWidth": 80,
+  "PageHeight": 60,
+  "Rows": {
+    "01": [
+      {
+        "value": "«HARP LAGER»",
+        "style": "B",
+        "font_size": 5,
+        "align": "C",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "02": [
+      {
+        "value": "ПИВО СВЕТЛОЕ ФИЛЬТРОВАННОЕ ПАСТЕРИЗОВАННОЕ «ХАРП ЛАГЕР»",
+        "style": "B",
+        "font_size": 5,
+        "align": "C",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "03": [
+      {
+        "value": "ОБЪЕМ 0,44 Л. АЛКОГОЛЬ 4%.",
+        "style": "B",
+        "font_size": 5,
+        "align": "L",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "04": [
+      {
+        "value": "СТРАНА ПРОИСХОЖДЕНИЯ – ИРЛАНДИЯ.",
+        "style": "B",
+        "font_size": 5,
+        "align": "L",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "05": [
+      {
+        "row_height": 12.7,
+        "value": "СОСТАВ: ВОДА ПОДГОТОВЛЕННАЯ (ИСПРАВЛЕННАЯ), СОЛОД ПИВОВАРЕННЫЙ ЯЧМЕННЫЙ, НЕСОЛОЖЕНЫЕ ЗЕРНОПРОДУКТЫ (ЯЧМЕНЬ), ХМЕЛЬ. ЭКСТРАКТИВНОСТЬ НАЧАЛЬНОГО СУСЛА 11,8%. СОДЕРЖАНИЕ ЭТИЛОВОГО СПИРТА ОБРАЗОВАВШЕГОСЯ В ПРОЦЕССЕ БРОЖЕНИЯ 4 МЛ В 100 МЛ ПРОДУКТА. СОДЕРЖАНИЕ ЭТИЛОВОГО СПИРТА 17,6 МЛ В 440 МЛ ПРОДУКТА. ПИЩЕВАЯ ЦЕННОСТЬ НА 100 МЛ: УГЛЕВОДЫ 3 Г, ЭНЕРГЕТИЧЕСКАЯ ЦЕННОСТЬ 136 КДЖ / 33 ККАЛ. СРОК ГОДНОСТИ 305 ДНЕЙ ПРИ СОБЛЮДЕНИИ УСЛОВИЙ ХРАНЕНИЯ. ХРАНИТЬ ПРИ TЕМПЕРАТУРЕ +2º- +25ºС И ОТНОСИТЕЛЬНОЙ ВЛАЖНОСТИ НЕ БОЛЕЕ 85% В ВЕНТИЛИРУЕМЫХ, НЕ ИМЕЮЩИХ ПОСТОРОННЕГО ЗАПАХА ПОМЕЩЕНИЯХ, ИСКЛЮЧАЮЩИХ ВОЗДЕЙСТВИЕ ПРЯМОГО СОЛНЕЧНОГО СВЕТА. РЕКОМЕНДУЕТСЯ УПОТРЕБИТЬ СРАЗУ ПОСЛЕ ВСКРЫТИЯ.",
+        "font_size": 4,
+        "align": "J",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "06": [
+      {
+        "value": "ДАТА РОЗЛИВА: 21.02.2025. УПОТРЕБИТЬ ДО: СМ. НА ДНЕ БАНКИ.",
+        "style": "B",
+        "font_size": 4,
+        "align": "L",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "07": [
+      {
+        "row_height": 1.5,
+        "col_width": 3,
+        "value": "ПРОИЗВЕДЕНО И РАЗЛИТО:",
+        "style": "B",
+        "font_size": 3.5,
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      },
+      {
+        "row_height": 1.5,
+        "col_width": 9,
+        "value": "\"GUINNESS \u0026 CO\" ST. JAMES S GALE, DUBLIN 8, IRELAND, ИРЛАНДИЯ.",
+        "font_size": 3.5,
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "08": [
+      {
+        "row_height": 1.5,
+        "col_width": 4,
+        "value": "ИМПОРТЕР В РЕСПУБЛИКУ БЕЛАРУСЬ:",
+        "style": "B",
+        "font_size": 3.5,
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      },
+      {
+        "row_height": 1.5,
+        "col_width": 8,
+        "value": "ООО \"ПЕКАРСКОЕ ДЕЛО\", БЕЛАРУСЬ, 220037, РЕСПУБЛИКА БЕЛАРУСЬ, Г. МИНСК",
+        "font_size": 3.5,
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "09": [
+      {
+        "value": "ПЕР.ТВЕРДЫЙ, 1-ЫЙ, ДОМ 11, ЛИТ. И, 4/К., КАБ. 49. ТЕЛ.  +375 25 523 06 28, e-mail: pekarskaia-sprava@mail.ru.",
+        "font_size": 3.5,
+        "align": "L",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "10": [
+      {
+        "row_height": 1.5,
+        "col_width": 2,
+        "value": "ИМПОРТЕР В РФ:",
+        "style": "B",
+        "font_size": 3.5,
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      },
+      {
+        "row_height": 1.5,
+        "col_width": 10,
+        "value": "ООО «ЛЮКАТ-ПЕКАРНИ», РОССИЯ, САНКТ-ПЕТЕРБУРГ, 191167, НАБ. ОБВОДНОГО КАНАЛА,",
+        "font_size": 3.5,
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "11": [
+      {
+        "value": "Д. 21, ЛИТЕР А, ПОМ. 1-Н/1, ЭТАЖ 1, ТЕЛ.: +7 (812) 429-39-46, e-mail: lucate-import@mail.ru;",
+        "font_size": 3.5,
+        "align": "L",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "12": [
+      {
+        "row_height": 12,
+        "value": "СОДЕРЖАНИЕ В ПРОДУКЦИИ ВРЕДНЫХ ДЛЯ ЗДОРОВЬЯ ВЕЩЕСТВ НЕ ПРЕВЫШАЕТ ДОПУСТИМЫЕ УРОВНИ, УСТАНОВЛЕННЫЕ ТЕХНИЧЕСКИМ РЕГЛАМЕНТОМ ТАМОЖЕННОГО СОЮЗА ТР ТС 021/2011 «О БЕЗОПАСНОСТИ ПИЩЕВОЙ ПРОДУКЦИИ», ТР ТС 029/2012 «ТРЕБОВАНИЯ БЕЗОПАСНОСТИ ПИЩЕВЫХ ДОБАВОК, АРОМАТИЗАТОРОВ И ТЕХНОЛОГИЧЕСКИХ ВСПОМОГАТЕЛЬНЫХ СРЕДСТВ», ТР ТС 022/2011 «ПИЩЕВАЯ ПРОДУКЦИЯ В ЧАСТИ ЕЕ МАРКИРОВКИ».\nАЛКОГОЛЬ ПРОТИВОПОКАЗАН ДЕТЯМ И ПОДРОСТКАМ ДО 18 ЛЕТ, БЕРЕМЕННЫМ И КОРМЯЩИМ ЖЕНЩИНАМ, ЛИЦАМ С ЗАБОЛЕВАНИЯМИ ЦЕНТРАЛЬНОЙ НЕРВНОЙ СИСТЕМЫ, ПОЧЕК, ПЕЧЕНИ И ДРУГИХ ОРГАНОВ ПИЩЕВАРЕНИЯ.",
+        "font_size": 4,
+        "align": "J",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "13": [
+      {
+        "row_height": 15,
+        "col_width": 5,
+        "top": 0,
+        "percent": 100,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        },
+        "image": "all",
+        "image_ext": "jpg",
+        "center": false,
+        "image_debug": false
+      },
+      {
+        "row_height": 15,
+        "col_width": 4,
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      },
+      {
+        "row_height": 15,
+        "col_width": 3,
+        "data_matrix": "insert",
+        "image_debug": false,
+        "percent": 100,
+        "center": true,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "14": [
+      {
+        "row_height": 1,
+        "col_width": 8,
+        "image_debug": false
+      },
+      {
+        "row_height": 1,
+        "col_width": 1
+      },
+      {
+        "value": "@ser",
+        "font_size": 3,
+        "style": "B",
+        "align": "C",
+        "row_height": 8,
+        "col_width": 3,
+        "image_debug": false
+      }
+    ]
+  }
+}
