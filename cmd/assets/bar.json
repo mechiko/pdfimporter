@@ -1,0 +1,284 @@
+{
+  "Name": "80x60 Bar128",
+  "PageWidth": 80,
+  "PageHeight": 60,
+  "Rows": {
+    "01": [
+      {
+        "value": "«HARP LAGER»",
+        "style": "B",
+        "font_size": 6,
+        "align": "C",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "02": [
+      {
+        "row_height": 1
+      }
+    ],
+    "03": [
+      {
+        "value": "ПИВО СВЕТЛОЕ ФИЛЬТРОВАННОЕ ПАСТЕРИЗОВАННОЕ «ХАРП ЛАГЕР»",
+        "style": "B",
+        "font_size": 5,
+        "align": "C",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "04": [
+      {
+        "row_height": 1
+      }
+    ],
+    "07": [
+      {
+        "row_height": 2,
+        "col_width": 4,
+        "value": "ПРОИЗВЕДЕНО И РАЗЛИТО:",
+        "style": "B",
+        "font_size": 4,
+        "align": "L",
+        "top": 0.3,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      },
+      {
+        "row_height": 2,
+        "col_width": 8,
+        "value": "\"GUINNESS \u0026 CO\" ST. JAMES S GALE, DUBLIN 8, IRELAND, ИРЛАНДИЯ.",
+        "font_size": 4,
+        "align": "L",
+        "top": 0.3,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "08": [
+      {
+        "row_height": 2,
+        "col_width": 4,
+        "value": "ИМПОРТЕР В РЕСПУБЛИКУ БЕЛАРУСЬ:",
+        "style": "B",
+        "font_size": 3.5,
+        "align": "L",
+        "top": 0.3,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      },
+      {
+        "row_height": 2,
+        "col_width": 8,
+        "value": "ООО \"ПЕКАРСКОЕ ДЕЛО\", БЕЛАРУСЬ, 220037, РЕСПУБЛИКА БЕЛАРУСЬ, Г. МИНСК",
+        "font_size": 3.5,
+        "align": "L",
+        "top": 0.3,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "09": [
+      {
+        "value": "ПЕР.ТВЕРДЫЙ, 1-ЫЙ, ДОМ 11, ЛИТ. И, 4/К., КАБ. 49. ТЕЛ.  +375 25 523 06 28, e-mail: pekarskaia-sprava@mail.ru.",
+        "font_size": 3.5,
+        "align": "L",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "10": [
+      {
+        "row_height": 3,
+        "col_width": 2,
+        "value": "ИМПОРТЕР В РФ:",
+        "style": "B",
+        "font_size": 4,
+        "align": "L",
+        "top": 1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      },
+      {
+        "row_height": 3,
+        "col_width": 10,
+        "value": "ООО «ЛЮКАТ-ПЕКАРНИ», РОССИЯ, САНКТ-ПЕТЕРБУРГ, 191167, НАБ. ОБВОДНОГО КАНАЛА,",
+        "font_size": 3.8,
+        "align": "L",
+        "top": 1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "11": [
+      {
+        "value": "Д. 21, ЛИТЕР А, ПОМ. 1-Н/1, ЭТАЖ 1, ТЕЛ.: +7 (812) 429-39-46, e-mail: lucate-import@mail.ru;",
+        "font_size": 3.8,
+        "align": "L",
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "12": [
+      {
+        "row_height": 4,
+        "value": "СРОК ГОДНОСТИ 305 ДНЕЙ ПРИ СОБЛЮДЕНИИ УСЛОВИЙ ХРАНЕНИЯ И ТРАНСПОРТИРОВАНИЯ.",
+        "font_size": 4,
+        "style": "B",
+        "align": "L",
+        "top": 2,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "13": [
+      {
+        "row_height": 4,
+        "value": "Хранить в вентилируемых, не имеющих посторонних запахов помещениях, исключающих воздействие прямого солнечного света, при температуре от +2°С до +25°С и относительной влажности не более 85 %.",
+        "font_size": 4,
+        "style": "B",
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "14": [
+      {
+        "value": "Количество: 24 б. Х 0,44л",
+        "font_size": 4,
+        "style": "B",
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "15": [
+      {
+        "value": "Дата розлива: 24.03.2025",
+        "font_size": 4,
+        "style": "B",
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "16": [
+      {
+        "value": "Употребить до:23.01.2026",
+        "font_size": 4,
+        "style": "B",
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "17": [
+      {
+        "value": "Номер партии соответствует дате розлива.",
+        "font_size": 4,
+        "style": "B",
+        "align": "L",
+        "top": 0.1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      }
+    ],
+    "18": [
+      {
+        "row_height": 4
+      }
+    ],
+    "19": [
+      {
+        "row_height": 8,
+        "col_width": 5,
+        "percent": 100,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        },
+        "center": true,
+        "image": "barpict",
+        "image_ext": "jpg",
+        "image_debug": false
+      },
+      {
+        "row_height": 8,
+        "col_width": 1,
+        "proportion": {
+          "Width": 0,
+          "Height": 0
+        }
+      },
+      {
+        "row_height": 8,
+        "col_width": 6,
+        "bar": "insert",
+        "percent": 100,
+        "center": false,
+        "image_debug": false,
+        "proportion": {
+          "Width": 4,
+          "Height": 3
+        }
+      }
+    ],
+    "20": [
+      {
+        "row_height": 1,
+        "col_width": 5,
+        "image_debug": true
+      },
+      {
+        "row_height": 1,
+        "col_width": 1
+      },
+      {
+        "value": "@kod",
+        "font_size": 5,
+        "style": "B",
+        "align": "C",
+        "row_height": 8,
+        "col_width": 6,
+        "image_debug": true
+      }
+    ]
+  }
+}
