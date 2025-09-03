@@ -1,3 +1,0 @@
-generate -> avg: 353.93ms, executions: [353.93ms]
-add_page -> avg: 80002.00ns, executions: [0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 1.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 1.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 1.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms, 1.00ms, 0.00ms, 0.00ms, 0.00ms, 0.00ms]
-file_size -> 401.52Kb
