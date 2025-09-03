@@ -3,11 +3,19 @@ package gui
 import (
 	"fmt"
 	"path/filepath"
+	"pdfimporter/pdfkm"
 	"pdfimporter/reductor"
 )
 
 // должна выполнятся как gorutine
 func (a *GuiApp) openFile(file string) {
+	logerr := func(s string, err error) {
+		if err != nil {
+			a.Logger().Errorf("%s %s", s, err.Error())
+			a.SendError(fmt.Sprintf("%s %s", s, err.Error()))
+			a.stateStart <- struct{}{}
+		}
+	}
 	// очистка лога на экране
 	a.stateIsProcess <- true
 	defer func() {
@@ -20,14 +28,15 @@ func (a *GuiApp) openFile(file string) {
 		a.stateStart <- struct{}{}
 		return
 	}
-	// сброс модели
-	a.pdf.Reset()
+	pdfGenerator, err := pdfkm.New(a)
+	if err != nil {
+		logerr("gui generate debug", err)
+		return
+	}
 	model.File = file
 	err = reductor.Instance().SetModel(model, false)
 	if err != nil {
-		a.Logger().Errorf("gui openFile SetModel %v", err)
-		a.SendError(fmt.Sprintf("ошибка записи модели в редуктор: %s", err.Error()))
-		a.stateStart <- struct{}{}
+		logerr("ошибка записи модели в редуктор:", err)
 		return
 	}
 	if model.File == "" {
@@ -36,13 +45,11 @@ func (a *GuiApp) openFile(file string) {
 	}
 	a.logClear <- struct{}{}
 	a.SendLog("считываем файл КМ")
-	if err := a.pdf.ReadCSV(model); err != nil {
-		a.Logger().Errorf("gui openFile ReadCSV %v", err)
-		a.SendError(fmt.Sprintf("ошибка загрузки файла: %s", err.Error()))
-		a.stateStart <- struct{}{}
+	if err := pdfGenerator.ReadCSV(model); err != nil {
+		logerr("ошибка загрузки файла:", err)
 		return
 	}
-	a.SendLog(fmt.Sprintf("считано %d КМ", len(a.pdf.Cis)))
+	a.SendLog(fmt.Sprintf("считано %d КМ", len(pdfGenerator.Cis)))
 
 	// устанавливаем состояни для пуск
 	a.stateSelectedInDir <- filepath.Base(file)

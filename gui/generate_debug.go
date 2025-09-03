@@ -2,6 +2,8 @@ package gui
 
 import (
 	"fmt"
+	"pdfimporter/domain/models/application"
+	"pdfimporter/pdfkm"
 	"pdfimporter/reductor"
 
 	"github.com/mechiko/utility"
@@ -10,84 +12,62 @@ import (
 // кнопка Пуск
 // запускать в отдельном поток от tk9
 func (a *GuiApp) generateDebug() {
+	modelStore := application.Application{}
+	logerr := func(s string, err error) {
+		if err != nil {
+			a.Logger().Errorf("%s %s", s, err.Error())
+			a.SendError(fmt.Sprintf("%s %s", s, err.Error()))
+			a.stateStart <- struct{}{}
+		}
+	}
 	defer func() {
+		// восстанавливаем модель
+		if err := reductor.Instance().SetModel(&modelStore, false); err != nil {
+			a.Logger().Errorf("%s", err.Error())
+		}
 		a.stateIsProcess <- false
 	}()
 	a.stateIsProcess <- true
 
-	a.SendLog("обрабатываем файлы...")
-	model, err := GetModel()
+	a.logClear <- struct{}{}
+	a.SendLog("обрабатываем тест...")
+	pdfGenerator, err := pdfkm.New(a)
 	if err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
+		logerr("gui generate debug", err)
 		return
 	}
-	// сброс модели
-	a.pdf.Reset()
-	// model.File =
+	model, err := GetModel()
+	if err != nil {
+		logerr("gui generate", err)
+		return
+	}
+	// модель простая поэтому просто копия структуры разыменованием должно сработать
+	modelStore = *model
+
+	model.File = "TEST"
 	err = reductor.Instance().SetModel(model, false)
 	if err != nil {
-		a.Logger().Errorf("gui openFile SetModel %v", err)
-		a.SendError(fmt.Sprintf("ошибка записи модели в редуктор: %s", err.Error()))
-		a.stateStart <- struct{}{}
+		logerr("gui openFile SetModel", err)
 		return
 	}
 	a.SendLog("считываем файл КМ")
-	if err := a.pdf.ReadDebug(); err != nil {
-		a.Logger().Errorf("gui openFile ReadCSV %v", err)
-		a.SendError(fmt.Sprintf("ошибка загрузки файла: %s", err.Error()))
-		a.stateStart <- struct{}{}
+	if err := pdfGenerator.ReadDebug(); err != nil {
+		logerr("gui openFile ReadCSV", err)
 		return
 	}
-	a.SendLog(fmt.Sprintf("считано %d КМ", len(a.pdf.Cis)))
+	a.SendLog(fmt.Sprintf("считано %d КМ", len(pdfGenerator.Cis)))
 
-	if err := a.pdf.GeneratePallet(model); err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
+	if err := pdfGenerator.GeneratePallet(model); err != nil {
+		logerr("gui generate", err)
 		return
 	}
-	fileName, err := a.pdf.Document(model, a.progresCh)
+	fileName, err := pdfGenerator.Document(model, a.progresCh)
 	if err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
-		return
-	}
-	a.Options().SsccStartNumber = a.pdf.LastSSCC()
-	if err := a.SaveOptions("ssccstartnumber", a.pdf.LastSSCC()); err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
-		return
-	}
-	modelFinal, err := GetModel()
-	if err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
-		return
-	}
-	modelFinal.SsccStartNumber = a.pdf.LastSSCC()
-	if err := reductor.Instance().SetModel(modelFinal, false); err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
+		logerr("gui generate", err)
 		return
 	}
 	a.SendLog(fileName)
-	if csvName, err := a.pdf.PaletSave("pallets"); err != nil {
-		a.Logger().Errorf("gui save palet csv %v", err)
-		a.SendError(fmt.Sprintf("gui save palet csv %v", err))
-		a.stateStart <- struct{}{}
-		return
-	} else {
-		a.SendLog(csvName)
-	}
-	if a.DebugMode() {
-		utility.OpenFileInShell(fileName)
-	}
+	utility.OpenFileInShell(fileName)
 	// по завершению обработки в БД кнопка Пуск запрещена
 	a.stateFinish <- struct{}{}
 }

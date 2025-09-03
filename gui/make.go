@@ -85,6 +85,7 @@ func (a *GuiApp) makeButtons() {
 		if a.isProcess {
 			return
 		}
+		a.debugButton.Configure(tk.State("disabled"))
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("disabled"))
 		go a.generate()
@@ -96,6 +97,6 @@ func (a *GuiApp) makeButtons() {
 		a.debugButton.Configure(tk.State("disabled"))
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("disabled"))
-		go a.generate()
+		go a.generateDebug()
 	}))
 }

@@ -47,7 +47,7 @@ type GuiApp struct {
 	logText            *tk.TextWidget
 
 	// processing *processing.Processing
-	pdf     *pdfkm.Pdf
+	// pdf     *pdfkm.Pdf
 	fileLbl *tk.TLabelWidget
 	fileBtn *tk.TButtonWidget
 
@@ -59,7 +59,7 @@ type GuiApp struct {
 func New(p *pdfkm.Pdf, app domain.Apper) (*GuiApp, error) {
 	a := &GuiApp{
 		Apper: app,
-		pdf:   p,
+		// pdf:   p,
 	}
 	a.logCh = make(chan LogMsg, 10)
 	a.stateFinish = make(chan struct{})
@@ -143,12 +143,14 @@ func (a *GuiApp) tick() {
 		a.fileBtn.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("enabled"))
+		a.debugButton.Configure(tk.State("enabled"))
 	case <-a.stateFinish:
 		// состояние после записи заказов магазина в БД
 		a.progres.Configure(tk.Value(0))
 		a.fileBtn.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("enabled"))
+		a.debugButton.Configure(tk.State("enabled"))
 	case file := <-a.stateSelectedInDir:
 		label := ""
 		if file != "" {
@@ -167,6 +169,7 @@ func (a *GuiApp) tick() {
 		a.fileBtn.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("enabled"))
 		a.exitButton.Configure(tk.State("enabled"))
+		a.debugButton.Configure(tk.State("enabled"))
 	case a.isProcess = <-a.stateIsProcess:
 		if a.isProcess {
 			a.fileBtn.Configure(tk.State("disabled"))

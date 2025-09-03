@@ -2,6 +2,7 @@ package gui
 
 import (
 	"fmt"
+	"pdfimporter/pdfkm"
 	"pdfimporter/reductor"
 
 	"github.com/mechiko/utility"
@@ -10,58 +11,63 @@ import (
 // кнопка Пуск
 // запускать в отдельном поток от tk9
 func (a *GuiApp) generate() {
+	logerr := func(s string, err error) {
+		if err != nil {
+			a.Logger().Errorf("%s %s", s, err.Error())
+			a.SendError(fmt.Sprintf("%s %s", s, err.Error()))
+			a.stateStart <- struct{}{}
+		}
+	}
 	defer func() {
 		a.stateIsProcess <- false
 	}()
 	a.stateIsProcess <- true
 
+	a.logClear <- struct{}{}
 	a.SendLog("обрабатываем файлы...")
+	pdfGenerator, err := pdfkm.New(a)
+	if err != nil {
+		logerr("gui generate debug", err)
+		return
+	}
 	model, err := GetModel()
 	if err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
+		logerr("gui generate debug", err)
 		return
 	}
-	if err := a.pdf.GeneratePallet(model); err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
+	a.SendLog("считываем файл КМ")
+	if err := pdfGenerator.ReadCSV(model); err != nil {
+		logerr("ошибка загрузки файла:", err)
 		return
 	}
-	fileName, err := a.pdf.Document(model, a.progresCh)
+	a.SendLog(fmt.Sprintf("считано %d КМ", len(pdfGenerator.Cis)))
+	if err := pdfGenerator.GeneratePallet(model); err != nil {
+		logerr("gui generate debug", err)
+		return
+	}
+	fileName, err := pdfGenerator.Document(model, a.progresCh)
 	if err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
+		logerr("gui generate debug", err)
 		return
 	}
-	a.Options().SsccStartNumber = a.pdf.LastSSCC()
-	if err := a.SaveOptions("ssccstartnumber", a.pdf.LastSSCC()); err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
+	a.Options().SsccStartNumber = pdfGenerator.LastSSCC()
+	if err := a.SaveOptions("ssccstartnumber", pdfGenerator.LastSSCC()); err != nil {
+		logerr("gui generate debug", err)
 		return
 	}
 	modelFinal, err := GetModel()
 	if err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
+		logerr("gui generate debug", err)
 		return
 	}
-	modelFinal.SsccStartNumber = a.pdf.LastSSCC()
+	modelFinal.SsccStartNumber = pdfGenerator.LastSSCC()
 	if err := reductor.Instance().SetModel(modelFinal, false); err != nil {
-		a.Logger().Errorf("gui generate %v", err)
-		a.SendError(fmt.Sprintf("gui generate %v", err))
-		a.stateStart <- struct{}{}
+		logerr("gui generate debug", err)
 		return
 	}
 	a.SendLog(fileName)
-	if csvName, err := a.pdf.PaletSave("pallets"); err != nil {
-		a.Logger().Errorf("gui save palet csv %v", err)
-		a.SendError(fmt.Sprintf("gui save palet csv %v", err))
-		a.stateStart <- struct{}{}
+	if csvName, err := pdfGenerator.PaletSave("pallets"); err != nil {
+		logerr("gui save palet csv", err)
 		return
 	} else {
 		a.SendLog(csvName)
