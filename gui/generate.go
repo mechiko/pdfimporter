@@ -48,11 +48,14 @@ func (a *GuiApp) generate() {
 	fileName, err := pdfGenerator.Document(model, a.progresCh)
 	if err != nil {
 		logerr("gui generate debug", err)
+		if model != nil && model.File != "" {
+			a.stateSelectedInDir <- model.File
+		}
 		return
 	}
 	a.Options().SsccStartNumber = pdfGenerator.LastSSCC()
 	if err := a.SaveOptions("ssccstartnumber", pdfGenerator.LastSSCC()); err != nil {
-		logerr("gui generate debug", err)
+		logerr("gui generate", err)
 		return
 	}
 	modelFinal, err := GetModel()

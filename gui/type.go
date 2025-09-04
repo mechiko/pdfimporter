@@ -3,6 +3,7 @@ package gui
 import (
 	_ "embed"
 	"fmt"
+	"path/filepath"
 	"pdfimporter/domain"
 	"pdfimporter/domain/models/application"
 	"pdfimporter/pdfkm"
@@ -43,6 +44,7 @@ type GuiApp struct {
 	logClear           chan struct{}
 	stateSelectedInDir chan string
 	stateIsProcess     chan bool
+	stateFinishDebug   chan struct{}
 	yscroll            *tk.Window
 	logText            *tk.TextWidget
 
@@ -63,6 +65,7 @@ func New(p *pdfkm.Pdf, app domain.Apper) (*GuiApp, error) {
 	}
 	a.logCh = make(chan LogMsg, 10)
 	a.stateFinish = make(chan struct{})
+	a.stateFinishDebug = make(chan struct{})
 	a.stateStart = make(chan struct{})
 	a.icon = tk.NewPhoto(tk.Data(ico))
 	a.progresCh = make(chan float64, 100)
@@ -146,6 +149,22 @@ func (a *GuiApp) tick() {
 		a.debugButton.Configure(tk.State("enabled"))
 	case <-a.stateFinish:
 		// состояние после записи заказов магазина в БД
+		model, err := GetModel()
+		if err != nil {
+			a.Logger().Errorf("gui stateFinish getmodel error %s", err.Error())
+		}
+		model.File = ""
+		if err := reductor.Instance().SetModel(model, false); err != nil {
+			a.Logger().Errorf("gui stateFinish setmodel error %s", err.Error())
+		}
+		a.fileLbl.Configure(tk.Txt(""))
+		a.progres.Configure(tk.Value(0))
+		a.fileBtn.Configure(tk.State("enabled"))
+		a.startButton.Configure(tk.State("disabled"))
+		a.exitButton.Configure(tk.State("enabled"))
+		a.debugButton.Configure(tk.State("enabled"))
+	case <-a.stateFinishDebug:
+		// состояние после test
 		a.progres.Configure(tk.Value(0))
 		a.fileBtn.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("disabled"))
@@ -154,20 +173,14 @@ func (a *GuiApp) tick() {
 	case file := <-a.stateSelectedInDir:
 		label := ""
 		if file != "" {
-			if len(file) > 50 {
-				label = fmt.Sprintf("%.40s...%s", file, file[len(file)-10:])
-			} else {
-				label = file
-			}
-		}
-		if a.fileLbl == nil {
-			a.fileLbl = a.inputFrame.TLabel(tk.Txt(label))
+			label = filepath.Base(file)
+			a.startButton.Configure(tk.State("enabled"))
 		} else {
-			a.fileLbl.Configure(tk.Txt(label))
+			a.startButton.Configure(tk.State("disabled"))
 		}
+		a.fileLbl.Configure(tk.Txt(label))
 		a.progres.Configure(tk.Value(0))
 		a.fileBtn.Configure(tk.State("enabled"))
-		a.startButton.Configure(tk.State("enabled"))
 		a.exitButton.Configure(tk.State("enabled"))
 		a.debugButton.Configure(tk.State("enabled"))
 	case a.isProcess = <-a.stateIsProcess:

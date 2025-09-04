@@ -159,5 +159,6 @@ cmd/**/*.csv
 cmd/**/*.xls
 cmd/**/*.xlss
 cmd/**/*.txt
+cmd/**/*.pdf
 
 embeded/**/*.ttf

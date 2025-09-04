@@ -44,19 +44,31 @@ func (a *GuiApp) generateDebug() {
 	// модель простая поэтому просто копия структуры разыменованием должно сработать
 	modelStore = *model
 
-	model.File = "TEST"
+	fileNormal := model.File
 	err = reductor.Instance().SetModel(model, false)
 	if err != nil {
 		logerr("gui openFile SetModel", err)
 		return
 	}
+
 	a.SendLog("считываем файл КМ")
-	if err := pdfGenerator.ReadDebug(); err != nil {
-		logerr("gui openFile ReadCSV", err)
-		return
+	if fileNormal != "" && utility.PathOrFileExists(fileNormal) {
+		if err := pdfGenerator.ReadCSV(model); err != nil {
+			logerr("gui openFile ReadCSV", err)
+			return
+		}
+		if len(pdfGenerator.Cis) > 25 {
+			pdfGenerator.Cis = pdfGenerator.Cis[:25]
+		}
+	} else {
+		if err := pdfGenerator.ReadDebug(); err != nil {
+			logerr("gui ReadDebug debug ReadCSV", err)
+			return
+		}
 	}
 	a.SendLog(fmt.Sprintf("считано %d КМ", len(pdfGenerator.Cis)))
 
+	model.File = "TEST"
 	if err := pdfGenerator.GeneratePallet(model); err != nil {
 		logerr("gui generate", err)
 		return
@@ -64,10 +76,16 @@ func (a *GuiApp) generateDebug() {
 	fileName, err := pdfGenerator.Document(model, a.progresCh)
 	if err != nil {
 		logerr("gui generate", err)
+		if modelStore.File != "" {
+			a.stateSelectedInDir <- modelStore.File
+		}
 		return
 	}
 	a.SendLog(fileName)
 	utility.OpenFileInShell(fileName)
-	// по завершению обработки в БД кнопка Пуск запрещена
+	if modelStore.File != "" {
+		a.stateSelectedInDir <- modelStore.File
+		return
+	}
 	a.stateFinish <- struct{}{}
 }

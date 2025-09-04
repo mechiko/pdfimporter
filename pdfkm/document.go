@@ -36,16 +36,17 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 	i := 0
 	for _, palet := range palets {
 		cises := k.Pallet[palet]
-		for _, cis := range cises {
+		for idxCis, cis := range cises {
 			fnc := cis.FNC1()
 			ser := cis.Serial
-			pdfDocument.AddPageByTemplate(k.templateDatamatrix, fnc, ser)
+			pdfDocument.AddPageByTemplate(k.templateDatamatrix, fnc, ser, fmt.Sprintf("%06d", idxCis+1))
 			ch <- step * float64(i)
 			i++
 		}
-		pdfDocument.AddPageByTemplate(k.templateBar, palet, "")
+		pdfDocument.AddPageByTemplate(k.templateBar, palet, "", "")
 		ch <- step * float64(i)
 		i++
+		// в режиме отладки берем только 26 знаков если их больше
 		if k.DebugMode() {
 			if i > 26 {
 				break

@@ -14,7 +14,7 @@ import (
 	"github.com/mechiko/maroto/v2/pkg/core"
 )
 
-func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string) (core.Page, error) {
+func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (core.Page, error) {
 	pg := page.New()
 	rowKeys := make([]string, 0, len(t.Rows))
 	for k := range t.Rows {
@@ -89,6 +89,7 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string) (core.Page, erro
 						cols[i] = col.New(rowSingle.ColWidth)
 					} else {
 						value := strings.ReplaceAll(rowSingle.Value, "@ser", ser)
+						value = strings.ReplaceAll(value, "@idx", idx)
 						// if sscc
 						if len(kod) == 20 {
 							kod1 := fmt.Sprintf("(%s)%s", kod[:2], kod[2:])

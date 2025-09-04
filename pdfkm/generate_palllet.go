@@ -16,14 +16,15 @@ func (k *Pdf) GeneratePallet(model *application.Application) error {
 	}
 	for {
 		k.lastSSCC = model.SsccStartNumber + indexPallet
-		palet, err := utility.GenerateSSCC(indexPallet, model.SsccPrefix)
+		palet, err := utility.GenerateSSCC(k.lastSSCC, model.SsccPrefix)
 		if err != nil {
 			return fmt.Errorf("failed to generate SSCC: %w", err)
 		}
 		if _, ok := k.Pallet[palet]; ok {
 			return fmt.Errorf("palet %s alredy present", palet)
 		}
-		k.Pallet[palet] = k.nextRecords(indexPallet, model.PerPallet)
+		// k.Pallet[palet] = k.nextRecords(indexPallet, model.PerPallet)
+		k.Pallet[palet] = nextRecords(k.Cis, indexPallet, model.PerPallet)
 		if len(k.Pallet[palet]) < model.PerPallet {
 			// выход если сгенерировано меньше чем единиц в упаковке
 			if len(k.Pallet[palet]) == 0 {
@@ -56,4 +57,20 @@ func (k *Pdf) nextRecords(i int, count int) (out []*utility.CisInfo) {
 		out = append(out, k.Cis[index])
 	}
 	return out
+}
+
+// index from 0 startIndex 0
+// nextRecords returns a batch of records starting from startIndex
+// Returns empty slice when no more records are available
+func nextRecords(arr []*utility.CisInfo, index int, count int) []*utility.CisInfo {
+	startIndex := index * count
+	if startIndex >= len(arr) {
+		return []*utility.CisInfo{}
+	}
+	endIndex := startIndex + count
+	// если последний индекс больше длины массива укорачиваем до размера массива
+	if endIndex > len(arr) {
+		endIndex = len(arr)
+	}
+	return arr[startIndex:endIndex]
 }

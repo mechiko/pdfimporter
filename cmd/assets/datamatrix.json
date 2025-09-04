@@ -231,12 +231,16 @@
     "14": [
       {
         "row_height": 1,
-        "col_width": 8,
+        "col_width": 3,
         "image_debug": false
       },
       {
+        "value": "@idx",
         "row_height": 1,
-        "col_width": 1
+        "col_width": 6,
+        "font_size": 3,
+        "style": "B",
+        "align": "C"
       },
       {
         "value": "@ser",
