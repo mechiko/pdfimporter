@@ -34,14 +34,16 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 	}
 	slices.Sort(palets)
 	i := 0
+	idxCis := 1
 	for _, palet := range palets {
 		cises := k.Pallet[palet]
-		for idxCis, cis := range cises {
+		for _, cis := range cises {
 			fnc := cis.FNC1()
 			ser := cis.Serial
 			pdfDocument.AddPageByTemplate(k.templateDatamatrix, fnc, ser, fmt.Sprintf("%06d", idxCis+1))
 			ch <- step * float64(i)
 			i++
+			idxCis++
 		}
 		pdfDocument.AddPageByTemplate(k.templateBar, palet, "", "")
 		ch <- step * float64(i)
