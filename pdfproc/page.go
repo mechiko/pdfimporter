@@ -15,7 +15,6 @@ import (
 )
 
 func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (core.Page, error) {
-	p.Logger().Info("============PAGE===============")
 	pg := page.New()
 	rowKeys := make([]string, 0, len(t.Rows))
 	for k := range t.Rows {
@@ -24,29 +23,22 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (cor
 	slices.Sort(rowKeys)
 	for _, rowKey := range rowKeys {
 		rowTempl := t.Rows[rowKey]
-		p.Logger().Infof("обрабатываем строку [%s] шаблонов %d", rowKey, len(rowTempl))
 		switch {
 		case len(rowTempl) == 0:
-			p.Logger().Info("пустой шаблон")
 		case len(rowTempl) == 1:
 			// одна строка автороу
-
-			p.Logger().Infof("один шаблон value [%s...]", fmt.Sprintf("%10s", rowTempl[0].Value))
 			row1 := rowTempl[0]
 			if row1.Value == "" {
 				// пустая строка с высотой
-				p.Logger().Infof("пустая строка с высотой %f", rowTempl[0].RowHeight)
 				pg.Add(
 					row.New(row1.RowHeight).Add(),
 				)
 			} else {
 				if row1.RowHeight == 0 {
-					p.Logger().Infof("строка с [%10s...] высотой 0", rowTempl[0].Value)
 					pg.Add(
 						text.NewAutoRow(row1.Value, row1.PropsText()),
 					)
 				} else {
-					p.Logger().Infof("строка с [%10s...] высотой %f", rowTempl[0].Value, rowTempl[0].RowHeight)
 					pg.Add(
 						row.New(row1.RowHeight).Add(
 							text.NewCol(12, row1.Value, row1.PropsText()),
@@ -55,61 +47,74 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (cor
 				}
 			}
 		case len(rowTempl) > 1:
-			p.Logger().Infof("%d колонок value [%10s...] высотой %f", len(rowTempl), rowTempl[0].Value, rowTempl[0].RowHeight)
 			cols := make([]core.Col, len(rowTempl))
 			// строки с колонками
 			for i, rowSingle := range rowTempl {
+				cols[i] = col.New(rowSingle.ColWidth)
 				if rowSingle.DataMatrix != "" {
+					cols[i].Add(
+						code.NewMatrix(kod, rowSingle.PropsRect()),
+					)
 					if rowSingle.ImageDebug {
-						cols[i] = code.NewMatrixCol(rowSingle.ColWidth, kod, rowSingle.PropsRect()).WithStyle(colStyle)
-					} else {
-						cols[i] = code.NewMatrixCol(rowSingle.ColWidth, kod, rowSingle.PropsRect())
+						cols[i].WithStyle(colStyle)
 					}
-				} else if rowSingle.Bar != "" {
+				}
+				if rowSingle.Bar != "" {
+					cols[i].Add(
+						code.NewBar(kod, rowSingle.PropsBar()),
+					)
 					if rowSingle.ImageDebug {
-						cols[i] = code.NewBarCol(rowSingle.ColWidth, kod, rowSingle.PropsBar()).WithStyle(colStyle)
-					} else {
-						cols[i] = code.NewBarCol(rowSingle.ColWidth, kod, rowSingle.PropsBar())
+						cols[i].WithStyle(colStyle)
 					}
+				}
+				if rowSingle.Image != "" {
+					if p.assets != nil {
+						img, err := p.assets.Jpg(rowSingle.Image)
+						if err != nil {
+							return nil, fmt.Errorf("page image assets error %w", err)
+						}
+						if len(img) == 0 {
+							return nil, fmt.Errorf("page image assets empty for %q", rowSingle.Image)
+						}
+						cols[i].Add(
+							image.NewFromBytes(img, rowSingle.ImageExt, rowSingle.PropsRect()),
+						)
+						if rowSingle.ImageDebug {
+							cols[i].WithStyle(colStyle)
+						}
+					} else {
+						return nil, fmt.Errorf("page image assets not available (assets is nil) for %q", rowSingle.Image)
+					}
+				}
+				if rowSingle.Value != "" {
+					value := strings.ReplaceAll(rowSingle.Value, "@ser", ser)
+					value = strings.ReplaceAll(value, "@idx", idx)
+					if len(kod) == 20 {
+						kod1 := fmt.Sprintf("(%s)%s", kod[:2], kod[2:])
+						value = strings.ReplaceAll(value, "@kod", kod1)
+					} else {
+						value = strings.ReplaceAll(value, "@kod", kod)
+					}
+					cols[i].Add(text.New(value, rowSingle.PropsText()))
 				} else {
-					if rowSingle.Image != "" {
-						if p.assets != nil {
-							img, err := p.assets.Jpg(rowSingle.Image)
-							if err != nil {
-								return nil, fmt.Errorf("page image assets error %w", err)
-							}
-							if len(img) == 0 {
-								return nil, fmt.Errorf("page image assets empty for %q", rowSingle.Image)
-							}
-							if rowSingle.ImageDebug {
-								cols[i] = col.New(rowSingle.ColWidth).Add(
-									image.NewFromBytes(img, rowSingle.ImageExt, rowSingle.PropsRect()),
-								).WithStyle(colStyle)
+					if len(rowSingle.Values) > 0 {
+						comps := make([]core.Component, 0)
+						for _, val := range rowSingle.Values {
+							value := strings.ReplaceAll(val.Value, "@ser", ser)
+							value = strings.ReplaceAll(value, "@idx", idx)
+							if len(kod) == 20 {
+								kod1 := fmt.Sprintf("(%s)%s", kod[:2], kod[2:])
+								value = strings.ReplaceAll(value, "@kod", kod1)
 							} else {
-								cols[i] = col.New(rowSingle.ColWidth).Add(
-									image.NewFromBytes(img, rowSingle.ImageExt, rowSingle.PropsRect()),
-								)
+								value = strings.ReplaceAll(value, "@kod", kod)
 							}
-						} else {
-							return nil, fmt.Errorf("page image assets not available (assets is nil) for %q", rowSingle.Image)
+							comps = append(comps, text.New(value, val.PropsText()))
 						}
-					} else if rowSingle.Value == "" {
-						cols[i] = col.New(rowSingle.ColWidth)
-					} else {
-						value := strings.ReplaceAll(rowSingle.Value, "@ser", ser)
-						value = strings.ReplaceAll(value, "@idx", idx)
-						// if sscc
-						if len(kod) == 20 {
-							kod1 := fmt.Sprintf("(%s)%s", kod[:2], kod[2:])
-							value = strings.ReplaceAll(value, "@kod", kod1)
-						} else {
-							value = strings.ReplaceAll(value, "@kod", kod)
-						}
-						cols[i] = text.NewCol(rowSingle.ColWidth, value, rowSingle.PropsText())
+						cols[i].Add(comps...)
+						// cols[i] = text.NewCol(rowSingle.ColWidth, value, rowSingle.PropsText())
 					}
 				}
 			}
-			p.Logger().Infof("!!! %d колонок value высотой %f", len(cols), rowTempl[0].RowHeight)
 			pg.Add(
 				row.New(rowTempl[0].RowHeight).Add(cols...),
 			)

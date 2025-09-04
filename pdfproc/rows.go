@@ -12,14 +12,15 @@ import (
 
 // описывает часть строки
 type RowPrimitive struct {
-	RowHeight  float64        `json:"row_height,omitempty"`
-	ColWidth   int            `json:"col_width,omitempty"`
-	Value      string         `json:"value,omitempty"`
-	Style      fontstyle.Type `json:"style,omitempty"`
-	FontSize   float64        `json:"font_size,omitempty"`
-	Align      align.Type     `json:"align,omitempty"`
-	Bar        string         `json:"bar,omitempty"`
-	DataMatrix string         `json:"data_matrix,omitempty"`
+	RowHeight  float64         `json:"row_height,omitempty"`
+	ColWidth   int             `json:"col_width,omitempty"`
+	Value      string          `json:"value,omitempty"`
+	Values     []*RowPrimitive `json:"values,omitempty"`
+	Style      fontstyle.Type  `json:"style,omitempty"`
+	FontSize   float64         `json:"font_size,omitempty"`
+	Align      align.Type      `json:"align,omitempty"`
+	Bar        string          `json:"bar,omitempty"`
+	DataMatrix string          `json:"data_matrix,omitempty"`
 	// Left is the space between the left cell boundary to the rectangle, if center is false.
 	Left float64 `json:"left,omitempty"`
 	// Top is space between the upper cell limit to the barcode, if center is false.
