@@ -12,9 +12,7 @@ type Application struct {
 	Output  string
 	Debug   bool
 	License string
-	//
-	Height          int64
-	Width           int64
+
 	File            string
 	SsccPrefix      string `json:"ssccprefix"`
 	SsccStartNumber int    `json:"ssccstartnumber"`
@@ -26,10 +24,8 @@ var _ domain.Modeler = (*Application)(nil)
 // создаем модель считываем ее состояние и возвращаем указатель
 func New(app domain.Apper) (*Application, error) {
 	model := &Application{
-		model:  domain.Application,
-		Title:  "Application Title",
-		Height: 60,
-		Width:  80,
+		model: domain.Application,
+		Title: "Application Title",
 	}
 	if err := model.ReadState(app); err != nil {
 		return nil, fmt.Errorf("model application read state %w", err)

@@ -17,7 +17,7 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 	if err != nil {
 		return "", fmt.Errorf("Error create pdfproc: %v", err)
 	}
-	if err := pdfDocument.BuildMaroto(float64(model.Width), float64(model.Height)); err != nil {
+	if err := pdfDocument.BuildMaroto(k.templateDatamatrix.PageWidth, k.templateDatamatrix.PageHeight); err != nil {
 		return "", fmt.Errorf("build maroto error %w", err)
 	}
 

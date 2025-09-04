@@ -15,6 +15,7 @@ import (
 )
 
 func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (core.Page, error) {
+	p.Logger().Info("============PAGE===============")
 	pg := page.New()
 	rowKeys := make([]string, 0, len(t.Rows))
 	for k := range t.Rows {
@@ -23,23 +24,29 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (cor
 	slices.Sort(rowKeys)
 	for _, rowKey := range rowKeys {
 		rowTempl := t.Rows[rowKey]
-		// fmt.Printf("обрабатываем строку [%s] %d\n", rowKey, len(rowTempl))
+		p.Logger().Infof("обрабатываем строку [%s] шаблонов %d", rowKey, len(rowTempl))
 		switch {
 		case len(rowTempl) == 0:
+			p.Logger().Info("пустой шаблон")
 		case len(rowTempl) == 1:
 			// одна строка автороу
+
+			p.Logger().Infof("один шаблон value [%s...]", fmt.Sprintf("%10s", rowTempl[0].Value))
 			row1 := rowTempl[0]
 			if row1.Value == "" {
 				// пустая строка с высотой
+				p.Logger().Infof("пустая строка с высотой %f", rowTempl[0].RowHeight)
 				pg.Add(
 					row.New(row1.RowHeight).Add(),
 				)
 			} else {
 				if row1.RowHeight == 0 {
+					p.Logger().Infof("строка с [%10s...] высотой 0", rowTempl[0].Value)
 					pg.Add(
 						text.NewAutoRow(row1.Value, row1.PropsText()),
 					)
 				} else {
+					p.Logger().Infof("строка с [%10s...] высотой %f", rowTempl[0].Value, rowTempl[0].RowHeight)
 					pg.Add(
 						row.New(row1.RowHeight).Add(
 							text.NewCol(12, row1.Value, row1.PropsText()),
@@ -48,8 +55,9 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (cor
 				}
 			}
 		case len(rowTempl) > 1:
+			p.Logger().Infof("%d колонок value [%10s...] высотой %f", len(rowTempl), rowTempl[0].Value, rowTempl[0].RowHeight)
 			cols := make([]core.Col, len(rowTempl))
-			// две строки с колонками
+			// строки с колонками
 			for i, rowSingle := range rowTempl {
 				if rowSingle.DataMatrix != "" {
 					if rowSingle.ImageDebug {
@@ -101,6 +109,7 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (cor
 					}
 				}
 			}
+			p.Logger().Infof("!!! %d колонок value высотой %f", len(cols), rowTempl[0].RowHeight)
 			pg.Add(
 				row.New(rowTempl[0].RowHeight).Add(cols...),
 			)

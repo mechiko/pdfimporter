@@ -5,7 +5,7 @@
   "Rows": {
     "01": [
       {
-        "value": "«CORONA EXTRA»",
+        "value": "«HARP LAGER»",
         "style": "B",
         "font_size": 6,
         "align": "C",
@@ -22,7 +22,7 @@
     ],
     "03": [
       {
-        "value": "ПИВНОЙ НАПИТОК СВЕТЛЫЙ ФИЛЬТРОВАННЫЙ ПАСТЕРИЗОВАННЫЙ «КОРОНА ЭКСТРА» (CORONA EXTRA), ОБЪЕМ 0,33 Л. АЛКОГОЛЬ 4,5% ОБ.",
+        "value": "ПИВО СВЕТЛОЕ ФИЛЬТРОВАННОЕ ПАСТЕРИЗОВАННОЕ «ХАРП ЛАГЕР»",
         "style": "B",
         "font_size": 5,
         "align": "C",
@@ -56,7 +56,6 @@
         "col_width": 8,
         "value": "\"GUINNESS \u0026 CO\" ST. JAMES S GALE, DUBLIN 8, IRELAND, ИРЛАНДИЯ.",
         "font_size": 4,
-        "style": "",
         "align": "L",
         "top": 0.3,
         "proportion": {
@@ -228,7 +227,7 @@
     ],
     "19": [
       {
-        "row_height": 10,
+        "row_height": 8,
         "col_width": 5,
         "percent": 100,
         "proportion": {
@@ -242,19 +241,43 @@
       },
       {
         "row_height": 8,
-        "col_width": 5,
+        "col_width": 1,
         "proportion": {
           "Width": 0,
           "Height": 0
         }
       },
       {
-        "row_height": 10,
-        "col_width": 2,
-        "data_matrix": "insert",
-        "image_debug": false,
+        "row_height": 8,
+        "col_width": 6,
+        "bar": "insert",
         "percent": 100,
-        "center": true
+        "center": false,
+        "image_debug": false,
+        "proportion": {
+          "Width": 4,
+          "Height": 3
+        }
+      }
+    ],
+    "20": [
+      {
+        "row_height": 1,
+        "col_width": 5,
+        "image_debug": true
+      },
+      {
+        "row_height": 1,
+        "col_width": 1
+      },
+      {
+        "value": "@kod",
+        "font_size": 5,
+        "style": "B",
+        "align": "C",
+        "row_height": 8,
+        "col_width": 6,
+        "image_debug": true
       }
     ]
   }

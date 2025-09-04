@@ -15,6 +15,8 @@ type pdfProc struct {
 	templateBar        *MarkTemplate
 	document           core.Document
 	debug              bool
+	height             float64
+	width              float64
 }
 
 func New(app domain.Apper, tmplDatamatrix, tmplBar *MarkTemplate, assets *assets.Assets) (*pdfProc, error) {
