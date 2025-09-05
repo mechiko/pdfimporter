@@ -1,6 +1,7 @@
 package pdfproc
 
 import (
+	"fmt"
 	"pdfimporter/assets"
 	"pdfimporter/domain"
 
@@ -20,6 +21,15 @@ type pdfProc struct {
 }
 
 func New(app domain.Apper, tmplDatamatrix, tmplBar *MarkTemplate, assets *assets.Assets) (*pdfProc, error) {
+	if app == nil {
+		return nil, fmt.Errorf("app is nil")
+	}
+	if assets == nil {
+		return nil, fmt.Errorf("assets is nil")
+	}
+	if tmplDatamatrix == nil || tmplBar == nil {
+		return nil, fmt.Errorf("mark templates must not be nil")
+	}
 	p := &pdfProc{
 		Apper:              app,
 		templateDatamatrix: tmplDatamatrix,

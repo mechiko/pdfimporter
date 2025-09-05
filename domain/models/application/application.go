@@ -41,10 +41,14 @@ func (a *Application) SyncToStore(app domain.Apper) (err error) {
 
 // читаем состояние приложения
 func (a *Application) ReadState(app domain.Apper) (err error) {
+	opts := app.Options()
+	if opts == nil {
+		return fmt.Errorf("nil options from app")
+	}
 	a.Debug = config.Mode == "development"
-	a.SsccPrefix = app.Options().SsccPrefix
-	a.SsccStartNumber = app.Options().SsccStartNumber
-	a.PerPallet = app.Options().PerPallet
+	a.SsccPrefix = opts.SsccPrefix
+	a.SsccStartNumber = opts.SsccStartNumber
+	a.PerPallet = opts.PerPallet
 	return nil
 }
 
