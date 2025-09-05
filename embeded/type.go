@@ -16,5 +16,8 @@ var Italic []byte
 //go:embed Arial-Unicode-Bold-Italic.ttf
 var BoldItalic []byte
 
-//go:embed test.csv
-var TestFile string
+//go:embed cis.csv
+var TestCisFile string
+
+//go:embed kigu.csv
+var TestKiguFile string

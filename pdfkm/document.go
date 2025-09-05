@@ -35,6 +35,7 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 	slices.Sort(palets)
 	i := 0
 	idxCis := 1
+	idxKigu := 0
 	for _, palet := range palets {
 		cises := k.Pallet[palet]
 		for _, cis := range cises {
@@ -45,7 +46,8 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 			i++
 			idxCis++
 		}
-		pdfDocument.AddPageByTemplate(k.templateBar, palet, "", "")
+		kigu := k.Kigu[idxKigu]
+		pdfDocument.AddPageByTemplate(k.templateBar, kigu.Code, "", "")
 		ch <- step * float64(i)
 		i++
 		// в режиме отладки берем только 26 знаков если их больше
@@ -65,7 +67,7 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 	}
 	k.Logger().Debugf("generate document %v\n", time.Since(start))
 
-	fileName := "PDF_" + filepath.Base(model.File)
+	fileName := "PDF_" + filepath.Base(model.FileCIS)
 	fileName = fileName[:len(fileName)-len(filepath.Ext(fileName))]
 	fileName = utility.TimeFileName(fileName) + ".pdf"
 	filePdf, err := utility.DialogSaveFile(utility.Pdf, fileName, ".")

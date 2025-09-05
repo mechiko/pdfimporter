@@ -15,6 +15,7 @@ import (
 type Pdf struct {
 	domain.Apper
 	Cis                []*utility.CisInfo
+	Kigu               []*utility.CisInfo
 	Sscc               []string
 	Pallet             map[string][]*utility.CisInfo
 	lastSSCC           int
@@ -31,6 +32,7 @@ func New(app domain.Apper) (p *Pdf, err error) {
 		warnings: make([]string, 0),
 		errors:   make([]string, 0),
 		Cis:      make([]*utility.CisInfo, 0),
+		Kigu:     make([]*utility.CisInfo, 0),
 		Sscc:     make([]string, 0),
 		Pallet:   make(map[string][]*utility.CisInfo),
 	}
@@ -86,6 +88,7 @@ func (k *Pdf) Reset() {
 	}
 	k.Sscc = make([]string, 0)
 	k.Cis = make([]*utility.CisInfo, 0)
+	k.Kigu = make([]*utility.CisInfo, 0)
 	k.errors = make([]string, 0)
 	k.warnings = make([]string, 0)
 	k.lastSSCC = 0

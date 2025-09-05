@@ -53,28 +53,28 @@ func (a *GuiApp) makeLog() {
 
 func (a *GuiApp) makeInputs(model *application.Application) {
 	a.inputFrame = tk.TFrame()
-	a.fileBtn = a.inputFrame.TButton(tk.Txt("Открыть файл КМ"), tk.Command(func() {
-		ff, err := utility.DialogOpenFile([]utility.FileType{utility.Csv, utility.All}, "", ".")
-		if err != nil {
-			a.logg("", err.Error())
-			return
-		}
-		if ff == "" { // user canceled
-			return
-		}
-		go a.openFile(ff)
-	}))
-	file := model.File
-	label := ""
-	if file != "" {
-		base := filepath.Base(file)
+	fileCis := model.FileCIS
+	labelCis := ""
+	if fileCis != "" {
+		base := filepath.Base(fileCis)
 		if len(base) > 50 {
-			label = fmt.Sprintf("%.40s...%s", base, base[len(base)-10:])
+			labelCis = fmt.Sprintf("%.40s...%s", base, base[len(base)-10:])
 		} else {
-			label = base
+			labelCis = base
 		}
 	}
-	a.fileLbl = a.inputFrame.TLabel(tk.Txt(label))
+	fileKigu := model.FileCIS
+	labelKigu := ""
+	if fileKigu != "" {
+		base := filepath.Base(fileKigu)
+		if len(base) > 50 {
+			labelKigu = fmt.Sprintf("%.40s...%s", base, base[len(base)-10:])
+		} else {
+			labelKigu = base
+		}
+	}
+	a.fileLblCis = a.inputFrame.TLabel(tk.Txt(labelCis))
+	a.fileLblKigu = a.inputFrame.TLabel(tk.Txt(labelKigu))
 	a.progres = a.inputFrame.TProgressbar()
 }
 
@@ -98,5 +98,28 @@ func (a *GuiApp) makeButtons() {
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("disabled"))
 		go a.generateDebug()
+	}))
+
+	a.fileBtnCis = a.inputFrame.TButton(tk.Txt("Открыть файл КМ"), tk.Command(func() {
+		ff, err := utility.DialogOpenFile([]utility.FileType{utility.Csv, utility.All}, "", ".")
+		if err != nil {
+			a.logg("", err.Error())
+			return
+		}
+		if ff == "" { // user canceled
+			return
+		}
+		go a.openFileCis(ff)
+	}))
+	a.fileBtnKigu = a.inputFrame.TButton(tk.Txt("Открыть файл КИГУ"), tk.Command(func() {
+		ff, err := utility.DialogOpenFile([]utility.FileType{utility.Csv, utility.All}, "", ".")
+		if err != nil {
+			a.logg("", err.Error())
+			return
+		}
+		if ff == "" { // user canceled
+			return
+		}
+		go a.openFileKigu(ff)
 	}))
 }

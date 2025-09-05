@@ -13,7 +13,8 @@ type Application struct {
 	Debug   bool
 	License string
 
-	File            string
+	FileCIS         string
+	FileKIGU        string
 	SsccPrefix      string `json:"ssccprefix"`
 	SsccStartNumber int    `json:"ssccstartnumber"`
 	PerPallet       int    `json:"perpallet"`

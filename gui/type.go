@@ -39,19 +39,22 @@ type GuiApp struct {
 	debugButton *tk.TButtonWidget
 	logCh       chan LogMsg
 	// stateFinishOpenXlsx   chan struct{}
-	stateFinish        chan struct{}
-	stateStart         chan struct{}
-	logClear           chan struct{}
-	stateSelectedInDir chan string
-	stateIsProcess     chan bool
-	stateFinishDebug   chan struct{}
-	yscroll            *tk.Window
-	logText            *tk.TextWidget
+	stateFinish           chan struct{}
+	stateStart            chan struct{}
+	logClear              chan struct{}
+	stateSelectedCisFile  chan string
+	stateSelectedKiguFile chan string
+	stateIsProcess        chan bool
+	stateFinishDebug      chan struct{}
+	yscroll               *tk.Window
+	logText               *tk.TextWidget
 
 	// processing *processing.Processing
 	// pdf     *pdfkm.Pdf
-	fileLbl *tk.TLabelWidget
-	fileBtn *tk.TButtonWidget
+	fileLblCis  *tk.TLabelWidget
+	fileBtnCis  *tk.TButtonWidget
+	fileLblKigu *tk.TLabelWidget
+	fileBtnKigu *tk.TButtonWidget
 
 	progres   *tk.TProgressbarWidget
 	progresCh chan float64
@@ -70,7 +73,8 @@ func New(p *pdfkm.Pdf, app domain.Apper) (*GuiApp, error) {
 	a.icon = tk.NewPhoto(tk.Data(ico))
 	a.progresCh = make(chan float64, 100)
 	a.logClear = make(chan struct{})
-	a.stateSelectedInDir = make(chan string, 2)
+	a.stateSelectedCisFile = make(chan string, 2)
+	a.stateSelectedKiguFile = make(chan string, 2)
 	a.stateIsProcess = make(chan bool, 2)
 
 	tk.App.IconPhoto(a.icon)
@@ -91,8 +95,8 @@ func New(p *pdfkm.Pdf, app domain.Apper) (*GuiApp, error) {
 	a.makeBindings()
 	a.makeWidgets(model)
 	a.makeLayout()
-	if model.File != "" {
-		go a.openFile(model.File)
+	if model.FileCIS != "" {
+		go a.openFileCis(model.FileCIS)
 	}
 	return a, nil
 }
@@ -143,7 +147,7 @@ func (a *GuiApp) tick() {
 	case <-a.stateStart:
 		// состояние начала возможно уже выбран файл
 		a.progres.Configure(tk.Value(0))
-		a.fileBtn.Configure(tk.State("enabled"))
+		a.fileBtnCis.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("enabled"))
 		a.debugButton.Configure(tk.State("enabled"))
@@ -153,24 +157,24 @@ func (a *GuiApp) tick() {
 		if err != nil {
 			a.Logger().Errorf("gui stateFinish getmodel error %s", err.Error())
 		}
-		model.File = ""
+		model.FileCIS = ""
 		if err := reductor.Instance().SetModel(model, false); err != nil {
 			a.Logger().Errorf("gui stateFinish setmodel error %s", err.Error())
 		}
-		a.fileLbl.Configure(tk.Txt(""))
+		a.fileLblCis.Configure(tk.Txt(""))
 		a.progres.Configure(tk.Value(0))
-		a.fileBtn.Configure(tk.State("enabled"))
+		a.fileBtnCis.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("enabled"))
 		a.debugButton.Configure(tk.State("enabled"))
 	case <-a.stateFinishDebug:
 		// состояние после test
 		a.progres.Configure(tk.Value(0))
-		a.fileBtn.Configure(tk.State("enabled"))
+		a.fileBtnCis.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("enabled"))
 		a.debugButton.Configure(tk.State("enabled"))
-	case file := <-a.stateSelectedInDir:
+	case file := <-a.stateSelectedCisFile:
 		label := ""
 		if file != "" {
 			label = filepath.Base(file)
@@ -178,16 +182,29 @@ func (a *GuiApp) tick() {
 		} else {
 			a.startButton.Configure(tk.State("disabled"))
 		}
-		a.fileLbl.Configure(tk.Txt(label))
+		a.fileLblCis.Configure(tk.Txt(label))
 		a.progres.Configure(tk.Value(0))
-		a.fileBtn.Configure(tk.State("enabled"))
+		a.fileBtnCis.Configure(tk.State("enabled"))
+		a.exitButton.Configure(tk.State("enabled"))
+		a.debugButton.Configure(tk.State("enabled"))
+	case file := <-a.stateSelectedKiguFile:
+		label := ""
+		if file != "" {
+			label = filepath.Base(file)
+			a.startButton.Configure(tk.State("enabled"))
+		} else {
+			a.startButton.Configure(tk.State("disabled"))
+		}
+		a.fileLblKigu.Configure(tk.Txt(label))
+		a.progres.Configure(tk.Value(0))
+		a.fileBtnKigu.Configure(tk.State("enabled"))
 		a.exitButton.Configure(tk.State("enabled"))
 		a.debugButton.Configure(tk.State("enabled"))
 	case a.isProcess = <-a.stateIsProcess:
 		if a.isProcess {
-			a.fileBtn.Configure(tk.State("disabled"))
+			a.fileBtnCis.Configure(tk.State("disabled"))
 		} else {
-			a.fileBtn.Configure(tk.State("enabled"))
+			a.fileBtnCis.Configure(tk.State("enabled"))
 		}
 	default:
 	}

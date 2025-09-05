@@ -16,9 +16,11 @@ func (a *GuiApp) makeLayout() {
 }
 
 func (a *GuiApp) layoutInputs() {
-	tk.Grid(a.fileBtn, tk.Row(0), tk.Column(0), tk.Sticky(tk.WE))
-	tk.Grid(a.fileLbl, tk.Row(0), tk.Column(1), tk.Sticky(tk.W))
-	tk.Grid(a.progres, tk.Row(1), tk.Column(0), tk.Columnspan(2), tk.Sticky(tk.WE))
+	tk.Grid(a.fileBtnCis, tk.Row(0), tk.Column(0), tk.Sticky(tk.WE))
+	tk.Grid(a.fileLblCis, tk.Row(0), tk.Column(1), tk.Sticky(tk.W))
+	tk.Grid(a.fileBtnKigu, tk.Row(1), tk.Column(0), tk.Sticky(tk.WE))
+	tk.Grid(a.fileLblKigu, tk.Row(1), tk.Column(1), tk.Sticky(tk.W))
+	tk.Grid(a.progres, tk.Row(2), tk.Column(0), tk.Columnspan(2), tk.Sticky(tk.WE))
 
 	tk.GridColumnConfigure(a.inputFrame, 1, tk.Weight(2))
 	tk.GridRowConfigure(a.inputFrame, 0, tk.Pad(5))

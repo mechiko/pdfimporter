@@ -35,12 +35,20 @@ func (a *GuiApp) generate() {
 		logerr("gui generate debug", err)
 		return
 	}
+
 	a.SendLog("считываем файл КМ")
-	if err := pdfGenerator.ReadCSV(model); err != nil {
+	if err := pdfGenerator.ReadCIS(model); err != nil {
 		logerr("ошибка загрузки файла:", err)
 		return
 	}
 	a.SendLog(fmt.Sprintf("считано %d КМ", len(pdfGenerator.Cis)))
+	a.SendLog("считываем файл КИГУ")
+	if err := pdfGenerator.ReadKIGU(model); err != nil {
+		logerr("ошибка загрузки файла:", err)
+		return
+	}
+	a.SendLog(fmt.Sprintf("считано %d КИГУ", len(pdfGenerator.Cis)))
+
 	if err := pdfGenerator.GeneratePallet(model); err != nil {
 		logerr("gui generate debug", err)
 		return
@@ -48,8 +56,8 @@ func (a *GuiApp) generate() {
 	fileName, err := pdfGenerator.Document(model, a.progresCh)
 	if err != nil {
 		logerr("gui generate debug", err)
-		if model != nil && model.File != "" {
-			a.stateSelectedInDir <- model.File
+		if model != nil && model.FileCIS != "" {
+			a.stateSelectedCisFile <- model.FileCIS
 		}
 		return
 	}

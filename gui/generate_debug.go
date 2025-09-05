@@ -44,16 +44,10 @@ func (a *GuiApp) generateDebug() {
 	// модель простая поэтому просто копия структуры разыменованием должно сработать
 	modelStore = *model
 
-	fileNormal := model.File
-	err = reductor.Instance().SetModel(model, false)
-	if err != nil {
-		logerr("gui openFile SetModel", err)
-		return
-	}
-
+	fileCisNormal := model.FileCIS
 	a.SendLog("считываем файл КМ")
-	if fileNormal != "" && utility.PathOrFileExists(fileNormal) {
-		if err := pdfGenerator.ReadCSV(model); err != nil {
+	if fileCisNormal != "" && utility.PathOrFileExists(fileCisNormal) {
+		if err := pdfGenerator.ReadCIS(model); err != nil {
 			logerr("gui openFile ReadCSV", err)
 			return
 		}
@@ -61,14 +55,33 @@ func (a *GuiApp) generateDebug() {
 			pdfGenerator.Cis = pdfGenerator.Cis[:25]
 		}
 	} else {
-		if err := pdfGenerator.ReadDebug(); err != nil {
+		if err := pdfGenerator.ReadCisDebug(); err != nil {
 			logerr("gui ReadDebug debug ReadCSV", err)
 			return
 		}
 	}
 	a.SendLog(fmt.Sprintf("считано %d КМ", len(pdfGenerator.Cis)))
 
-	model.File = "TEST"
+	fileKiguNormal := model.FileCIS
+	a.SendLog("считываем файл КИГУ")
+	if fileKiguNormal != "" && utility.PathOrFileExists(fileKiguNormal) {
+		if err := pdfGenerator.ReadKIGU(model); err != nil {
+			logerr("gui openFile ReadKigu", err)
+			return
+		}
+		if len(pdfGenerator.Kigu) > 1 {
+			pdfGenerator.Kigu = pdfGenerator.Kigu[:2]
+		}
+	} else {
+		if err := pdfGenerator.ReadKiguDebug(); err != nil {
+			logerr("gui ReadDebug debug ReadKiguDebug", err)
+			return
+		}
+	}
+	a.SendLog(fmt.Sprintf("считано %d КИГУ", len(pdfGenerator.Kigu)))
+
+	model.FileCIS = "TEST"
+	model.FileKIGU = "TEST"
 	if err := pdfGenerator.GeneratePallet(model); err != nil {
 		logerr("gui generate", err)
 		return
@@ -76,15 +89,15 @@ func (a *GuiApp) generateDebug() {
 	fileName, err := pdfGenerator.Document(model, a.progresCh)
 	if err != nil {
 		logerr("gui generate", err)
-		if modelStore.File != "" {
-			a.stateSelectedInDir <- modelStore.File
+		if modelStore.FileCIS != "" {
+			a.stateSelectedCisFile <- modelStore.FileCIS
 		}
 		return
 	}
 	a.SendLog(fileName)
 	utility.OpenFileInShell(fileName)
-	if modelStore.File != "" {
-		a.stateSelectedInDir <- modelStore.File
+	if modelStore.FileCIS != "" {
+		a.stateSelectedCisFile <- modelStore.FileCIS
 		return
 	}
 	a.stateFinish <- struct{}{}
