@@ -23,7 +23,7 @@ type LogMsg struct {
 	Msg   string
 }
 
-//go:embed ico.png
+//go:embed 192.png
 var ico []byte
 
 type GuiApp struct {
@@ -34,10 +34,11 @@ type GuiApp struct {
 	inputFrame  *tk.TFrameWidget
 	logFrame    *tk.TFrameWidget
 
-	startButton *tk.TButtonWidget
-	exitButton  *tk.TButtonWidget
-	debugButton *tk.TButtonWidget
-	logCh       chan LogMsg
+	startButton  *tk.TButtonWidget
+	exitButton   *tk.TButtonWidget
+	debugButton  *tk.TButtonWidget
+	configButton *tk.TButtonWidget
+	logCh        chan LogMsg
 	// stateFinishOpenXlsx   chan struct{}
 	stateFinish           chan struct{}
 	stateStart            chan struct{}

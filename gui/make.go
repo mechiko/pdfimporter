@@ -99,6 +99,8 @@ func (a *GuiApp) makeButtons() {
 		a.exitButton.Configure(tk.State("disabled"))
 		go a.generateDebug()
 	}))
+	a.configButton = a.buttonFrame.TButton(tk.Txt("Настройка"),
+		tk.Command(a.onConfig))
 
 	a.fileBtnCis = a.inputFrame.TButton(tk.Txt("Открыть файл КМ"), tk.Command(func() {
 		ff, err := utility.DialogOpenFile([]utility.FileType{utility.Csv, utility.All}, "", ".")

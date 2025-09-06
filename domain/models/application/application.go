@@ -37,6 +37,21 @@ func New(app domain.Apper) (*Application, error) {
 // синхронизирует с приложением в сторону приложения из модели редуктора
 func (a *Application) SyncToStore(app domain.Apper) (err error) {
 	// ...
+	err = app.SetOptions("ssccprefix", a.SsccPrefix)
+	if err != nil {
+		return fmt.Errorf("model:application save ssccprefix to store error %w", err)
+	}
+	err = app.SetOptions("ssccstartnumber", a.SsccStartNumber)
+	if err != nil {
+		return fmt.Errorf("model:application save ssccstartnumber to store error %w", err)
+	}
+	err = app.SetOptions("perpallet", a.PerPallet)
+	if err != nil {
+		return fmt.Errorf("model:application save perpallet to store error %w", err)
+	}
+	if err := app.SaveAllOptions(); err != nil {
+		return fmt.Errorf("model:application sync to store error %w", err)
+	}
 	return err
 }
 

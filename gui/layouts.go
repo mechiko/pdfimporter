@@ -38,4 +38,5 @@ func (a *GuiApp) layoutButton() {
 	tk.Grid(a.startButton, tk.Row(0), tk.Column(1), tk.Padx(5), tk.Sticky(tk.WE))
 	tk.Grid(a.debugButton, tk.Row(0), tk.Column(2), tk.Padx(5), tk.Sticky(tk.E))
 	tk.Grid(a.exitButton, tk.Row(0), tk.Column(3), tk.Padx(5), tk.Sticky(tk.E))
+	tk.Grid(a.configButton, tk.Row(0), tk.Column(4), tk.Padx(5), tk.Sticky(tk.E))
 }

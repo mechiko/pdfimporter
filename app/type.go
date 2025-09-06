@@ -136,7 +136,7 @@ func (a *app) Options() *config.Configuration {
 
 // записываем ключ и его значение только в пакет config
 // изменения записываются в файл конфигурации
-func (a *app) SaveOptions(key string, value any) error {
+func (a *app) SetOptions(key string, value any) error {
 	a.config.SetInConfig(key, value)
 	if err := a.config.Save(); err != nil {
 		return fmt.Errorf("save in config error %w", err)

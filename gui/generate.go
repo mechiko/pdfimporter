@@ -62,7 +62,7 @@ func (a *GuiApp) generate() {
 		return
 	}
 	a.Options().SsccStartNumber = pdfGenerator.LastSSCC()
-	if err := a.SaveOptions("ssccstartnumber", pdfGenerator.LastSSCC()); err != nil {
+	if err := a.SetOptions("ssccstartnumber", pdfGenerator.LastSSCC()); err != nil {
 		logerr("gui generate", err)
 		return
 	}
