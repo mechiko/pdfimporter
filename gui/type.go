@@ -87,8 +87,6 @@ func New(p *pdfkm.Pdf, app domain.Apper) (*GuiApp, error) {
 	}
 	tk.InitializeExtension("autoscroll")
 
-	tk.NewTicker(tick, a.tick)
-
 	model, err := GetModel()
 	if err != nil {
 		return nil, fmt.Errorf("gui new get model %w", err)
@@ -96,6 +94,8 @@ func New(p *pdfkm.Pdf, app domain.Apper) (*GuiApp, error) {
 	a.makeBindings()
 	a.makeWidgets(model)
 	a.makeLayout()
+	// start ticker only after widgets/layout are ready
+	tk.NewTicker(tick, a.tick)
 	if model.FileCIS != "" {
 		go a.openFileCis(model.FileCIS)
 	}
@@ -165,6 +165,7 @@ func (a *GuiApp) tick() {
 		a.fileLblCis.Configure(tk.Txt(""))
 		a.progres.Configure(tk.Value(0))
 		a.fileBtnCis.Configure(tk.State("enabled"))
+		a.fileBtnKigu.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("enabled"))
 		a.debugButton.Configure(tk.State("enabled"))
@@ -172,6 +173,7 @@ func (a *GuiApp) tick() {
 		// состояние после test
 		a.progres.Configure(tk.Value(0))
 		a.fileBtnCis.Configure(tk.State("enabled"))
+		a.fileBtnKigu.Configure(tk.State("enabled"))
 		a.startButton.Configure(tk.State("disabled"))
 		a.exitButton.Configure(tk.State("enabled"))
 		a.debugButton.Configure(tk.State("enabled"))
@@ -204,8 +206,10 @@ func (a *GuiApp) tick() {
 	case a.isProcess = <-a.stateIsProcess:
 		if a.isProcess {
 			a.fileBtnCis.Configure(tk.State("disabled"))
+			a.fileBtnKigu.Configure(tk.State("disabled"))
 		} else {
 			a.fileBtnCis.Configure(tk.State("enabled"))
+			a.fileBtnKigu.Configure(tk.State("enabled"))
 		}
 	default:
 	}

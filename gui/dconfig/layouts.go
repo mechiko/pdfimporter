@@ -11,11 +11,12 @@ func (me *ConfigDialog) makeLayout() {
 
 func (me *ConfigDialog) layoutInputs() {
 	tk.Grid(me.inputFrame.Label(tk.Txt("Префикс упаковки:")), tk.Row(0), tk.Column(0), tk.Sticky(tk.W))
-	tk.Grid(me.prefixSSCC, tk.Row(0), tk.Column(1), tk.Sticky(tk.W))
+	tk.Grid(me.prefixSSCC, tk.Row(0), tk.Column(1), tk.Sticky(tk.WE))
 	tk.Grid(me.inputFrame.Label(tk.Txt("Штук в упаковке:")), tk.Row(1), tk.Column(0), tk.Sticky(tk.W))
-	tk.Grid(me.perPalet, tk.Row(1), tk.Column(1), tk.Sticky(tk.W))
+	tk.Grid(me.perPalet, tk.Row(1), tk.Column(1), tk.Sticky(tk.WE))
 	tk.Grid(me.inputFrame.Label(tk.Txt("Начальный номер упаковки:")), tk.Row(2), tk.Column(0), tk.Sticky(tk.W))
-	tk.Grid(me.startSSCC, tk.Row(2), tk.Column(1), tk.Sticky(tk.W))
+	tk.Grid(me.startSSCC, tk.Row(2), tk.Column(1), tk.Sticky(tk.WE))
+	tk.GridColumnConfigure(me.inputFrame, 1, tk.Weight(1))
 }
 
 func (me *ConfigDialog) layoutButton() {

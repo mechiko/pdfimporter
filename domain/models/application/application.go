@@ -2,7 +2,6 @@ package application
 
 import (
 	"fmt"
-	"pdfimporter/config"
 	"pdfimporter/domain"
 )
 
@@ -61,7 +60,7 @@ func (a *Application) ReadState(app domain.Apper) (err error) {
 	if opts == nil {
 		return fmt.Errorf("nil options from app")
 	}
-	a.Debug = config.Mode == "development"
+	a.Debug = app.DebugMode()
 	a.SsccPrefix = opts.SsccPrefix
 	a.SsccStartNumber = opts.SsccStartNumber
 	a.PerPallet = opts.PerPallet

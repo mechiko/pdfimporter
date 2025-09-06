@@ -23,9 +23,7 @@ func (a *GuiApp) openFileCis(file string) {
 	}()
 	model, err := GetModel()
 	if err != nil {
-		a.Logger().Errorf("gui openFile %v", err)
-		a.SendError(fmt.Sprintf("gui openFile %v", err))
-		a.stateStart <- struct{}{}
+		logerr("gui openFile", err)
 		return
 	}
 	pdfGenerator, err := pdfkm.New(a)
@@ -44,12 +42,18 @@ func (a *GuiApp) openFileCis(file string) {
 		return
 	}
 	a.logClear <- struct{}{}
-	a.SendLog("считываем файл КМ")
+	a.SendLog("проверяем файл КМ")
 	if err := pdfGenerator.ReadCIS(model); err != nil {
 		logerr("ошибка загрузки файла:", err)
 		return
 	}
-	a.SendLog(fmt.Sprintf("считано %d КМ", len(pdfGenerator.Cis)))
+	remainder := len(pdfGenerator.Cis) % model.PerPallet
+	numberPacks := len(pdfGenerator.Cis) / model.PerPallet
+	if remainder != 0 {
+		logerr("в файле КМ:", fmt.Errorf("количество КМ %d не кратно упаковке %d остается %d", len(pdfGenerator.Cis), model.PerPallet, remainder))
+		return
+	}
+	a.SendLog(fmt.Sprintf("считано %d КМ %d упаковок", len(pdfGenerator.Cis), numberPacks))
 	// устанавливаем состояни для пуск
 	a.stateSelectedCisFile <- filepath.Base(file)
 }
@@ -69,9 +73,7 @@ func (a *GuiApp) openFileKigu(file string) {
 	}()
 	model, err := GetModel()
 	if err != nil {
-		a.Logger().Errorf("gui openFileKigu %v", err)
-		a.SendError(fmt.Sprintf("gui openFileKigu %v", err))
-		a.stateStart <- struct{}{}
+		logerr("gui openFile", err)
 		return
 	}
 	pdfGenerator, err := pdfkm.New(a)
@@ -90,12 +92,6 @@ func (a *GuiApp) openFileKigu(file string) {
 		return
 	}
 	a.logClear <- struct{}{}
-	a.SendLog("считываем файл КИГУ")
-	if err := pdfGenerator.ReadKIGU(model); err != nil {
-		logerr("ошибка загрузки файла:", err)
-		return
-	}
-	a.SendLog(fmt.Sprintf("считано %d КИГУ", len(pdfGenerator.Kigu)))
 	a.SendLog("считываем файл КИГУ")
 	if err := pdfGenerator.ReadKIGU(model); err != nil {
 		logerr("ошибка загрузки файла:", err)

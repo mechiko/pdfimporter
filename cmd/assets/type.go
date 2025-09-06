@@ -68,7 +68,7 @@ func (a *Assets) Json(name string) (b []byte, err error) {
 func (a *Assets) load() (err error) {
 	entries, err := os.ReadDir(a.path)
 	if err != nil {
-		return fmt.Errorf("%w", err)
+		return fmt.Errorf("readdir %s: %w", a.path, err)
 	}
 	for _, file := range entries {
 		if !file.IsDir() {
