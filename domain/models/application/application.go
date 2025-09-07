@@ -14,6 +14,8 @@ type Application struct {
 
 	FileCIS         string
 	FileKIGU        string
+	MarkTemplate    string
+	PackTemplate    string
 	SsccPrefix      string `json:"ssccprefix"`
 	SsccStartNumber int    `json:"ssccstartnumber"`
 	PerPallet       int    `json:"perpallet"`

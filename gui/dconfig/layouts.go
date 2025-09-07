@@ -16,6 +16,11 @@ func (me *ConfigDialog) layoutInputs() {
 	tk.Grid(me.perPalet, tk.Row(1), tk.Column(1), tk.Sticky(tk.WE))
 	tk.Grid(me.inputFrame.Label(tk.Txt("Начальный номер упаковки:")), tk.Row(2), tk.Column(0), tk.Sticky(tk.W))
 	tk.Grid(me.startSSCC, tk.Row(2), tk.Column(1), tk.Sticky(tk.WE))
+	tk.Grid(me.inputFrame.Label(tk.Txt("Шаблон КМ:")), tk.Row(3), tk.Column(0), tk.Sticky(tk.W))
+	tk.Grid(me.datamatrixCombo, tk.Row(3), tk.Column(1), tk.Sticky(tk.WE))
+	tk.Grid(me.inputFrame.Label(tk.Txt("Шаблон КИГУ:")), tk.Row(4), tk.Column(0), tk.Sticky(tk.W))
+	tk.Grid(me.barCombo, tk.Row(4), tk.Column(1), tk.Sticky(tk.WE))
+
 	tk.GridColumnConfigure(me.inputFrame, 1, tk.Weight(1))
 }
 

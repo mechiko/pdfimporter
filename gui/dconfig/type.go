@@ -27,6 +27,9 @@ type ConfigDialog struct {
 	inputFrame   *tk.TFrameWidget
 	okButton     *tk.TButtonWidget
 	cancelButton *tk.TButtonWidget
+
+	datamatrixCombo *tk.TComboboxWidget
+	barCombo        *tk.TComboboxWidget
 }
 
 func NewConfigDialog(data *ConfigDialogData) *ConfigDialog {

@@ -21,8 +21,8 @@ type Configuration struct {
 	SsccPrefix      string `json:"ssccprefix"`
 	SsccStartNumber int    `json:"ssccstartnumber"`
 	PerPallet       int    `json:"perpallet"`
-	Height          int
-
+	MarkTemplate    string `json:"marktemplate"`
+	PackTemplate    string `json:"packtemplate"`
 	// Application AppConfiguration    `json:"application"`
 	Layouts LayoutConfiguration `json:"layouts"`
 	// описатели БД рефактор

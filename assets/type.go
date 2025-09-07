@@ -65,6 +65,18 @@ func (a *Assets) Json(name string) (b []byte, err error) {
 	return
 }
 
+func (a *Assets) Templates() (out []string, err error) {
+	a.mutex.Lock()
+	defer a.mutex.Unlock()
+	out = make([]string, len(a.json))
+	i := 0
+	for key := range a.json {
+		out[i] = key
+		i++
+	}
+	return out, nil
+}
+
 func (a *Assets) load() (err error) {
 	entries, err := os.ReadDir(a.path)
 	if err != nil {

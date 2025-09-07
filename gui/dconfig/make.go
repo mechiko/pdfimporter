@@ -2,6 +2,7 @@ package dconfig
 
 import (
 	"fmt"
+	"pdfimporter/assets"
 
 	tk "modernc.org/tk9.0"
 )
@@ -16,6 +17,10 @@ func (me *ConfigDialog) makeInputs() {
 	me.perPalet = me.inputFrame.TEntry(tk.Textvariable(fmt.Sprintf("%d", me.data.PerPallet)))
 	me.startSSCC = me.inputFrame.TEntry(tk.Textvariable(fmt.Sprintf("%d", me.data.SsccStartNumber)))
 	me.prefixSSCC = me.inputFrame.TEntry(tk.Textvariable(me.data.PrefixSSCC))
+	asts, _ := assets.New("assets")
+	tmplts, _ := asts.Templates()
+	me.datamatrixCombo = me.inputFrame.TCombobox(tk.State("readonly"), tk.Textvariable("выбери шаблон"), tk.Values(tmplts))
+	me.barCombo = me.inputFrame.TCombobox(tk.State("readonly"), tk.Textvariable("выбери шаблон"), tk.Values(tmplts))
 }
 
 func (me *ConfigDialog) makeButtons() {
