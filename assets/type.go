@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"pdfimporter/domain"
 	"strings"
 	"sync"
 
@@ -15,6 +16,8 @@ type Assets struct {
 	path  string
 	jpg   map[string][]byte
 	json  map[string][]byte
+	// соответствие имени шаблона в описании с именем файла шаблона
+	templateNames map[string]string
 }
 
 func New(path string) (*Assets, error) {
@@ -22,9 +25,10 @@ func New(path string) (*Assets, error) {
 		return nil, fmt.Errorf("%s not found", path)
 	}
 	a := &Assets{
-		path: path,
-		jpg:  make(map[string][]byte),
-		json: make(map[string][]byte),
+		path:          path,
+		jpg:           make(map[string][]byte),
+		json:          make(map[string][]byte),
+		templateNames: make(map[string]string),
 	}
 	err := a.load()
 	if err != nil {
@@ -70,7 +74,7 @@ func (a *Assets) Templates() (out []string, err error) {
 	defer a.mutex.Unlock()
 	out = make([]string, len(a.json))
 	i := 0
-	for key := range a.json {
+	for key := range a.templateNames {
 		out[i] = key
 		i++
 	}
@@ -105,8 +109,42 @@ func (a *Assets) load() (err error) {
 				}
 				// Convert the byte slice to a string
 				a.json[base] = contentBytes
+				out, err := domain.NewMarkTemplate(contentBytes)
+				if out == nil || err != nil {
+					return fmt.Errorf("new marktemplate error %w", err)
+				}
+				if out.Name == "" {
+					return fmt.Errorf("new marktemplate name empty")
+				}
+				if _, ok := a.templateNames[out.Name]; ok {
+					return fmt.Errorf("marktemplate %s alredy present", out.Name)
+				}
+				a.templateNames[out.Name] = base
 			}
 		}
 	}
 	return nil
+}
+
+// находим шаблон по имени в описании
+func (a *Assets) Template(name string) (out *domain.MarkTemplate, err error) {
+	a.mutex.Lock()
+	defer a.mutex.Unlock()
+	if name == "" {
+		return nil, fmt.Errorf("assets json name %s is empty", name)
+	}
+	// name = strings.ToLower(name)
+	nameJson, exist := a.templateNames[name]
+	if !exist {
+		return nil, fmt.Errorf("assets template %s not found", name)
+	}
+	nameJson = strings.ToLower(nameJson)
+	byteJson, ok := a.json[nameJson]
+	if !ok {
+		return nil, fmt.Errorf("assets json %s not found", nameJson)
+	}
+	copyByte := make([]byte, len(byteJson))
+	copy(copyByte, byteJson)
+	out, err = domain.NewMarkTemplate(copyByte)
+	return out, err
 }

@@ -13,6 +13,8 @@ type ConfigDialogData struct {
 	PrefixSSCC      string
 	SsccStartNumber int
 	PerPallet       int
+	MarkTemplate    string
+	PackTemplate    string
 }
 
 type ConfigDialog struct {

@@ -5,6 +5,8 @@ var TomlConfig = []byte(`
 ssccprefix = "146024436369"
 ssccstartnumber = 1
 perpallet = 24
+marktemplate = ""
+packtemplate = ""
 
 [layouts]
 timelayout = "2006-01-02T15:04:05-0700"

@@ -50,6 +50,14 @@ func (a *Application) SyncToStore(app domain.Apper) (err error) {
 	if err != nil {
 		return fmt.Errorf("model:application save perpallet to store error %w", err)
 	}
+	err = app.SetOptions("marktemplate", a.MarkTemplate)
+	if err != nil {
+		return fmt.Errorf("model:application save marktemplate to store error %w", err)
+	}
+	err = app.SetOptions("packtemplate", a.PackTemplate)
+	if err != nil {
+		return fmt.Errorf("model:application save packtemplate to store error %w", err)
+	}
 	if err := app.SaveAllOptions(); err != nil {
 		return fmt.Errorf("model:application sync to store error %w", err)
 	}
@@ -66,6 +74,8 @@ func (a *Application) ReadState(app domain.Apper) (err error) {
 	a.SsccPrefix = opts.SsccPrefix
 	a.SsccStartNumber = opts.SsccStartNumber
 	a.PerPallet = opts.PerPallet
+	a.MarkTemplate = opts.MarkTemplate
+	a.PackTemplate = opts.PackTemplate
 	return nil
 }
 
