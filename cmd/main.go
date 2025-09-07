@@ -11,7 +11,6 @@ import (
 	"pdfimporter/config"
 	"pdfimporter/domain/models/application"
 	"pdfimporter/gui"
-	"pdfimporter/pdfkm"
 	"pdfimporter/reductor"
 	"pdfimporter/zaplog"
 
@@ -99,17 +98,14 @@ func main() {
 		errProcessExit("Ошибка редуктора", err.Error())
 	}
 	// тесты
-	if err := checkdbg.NewChecks(app).Run(); err != nil {
-		loger.Errorf("check error %v", err)
-		errProcessExit("Check failed", err.Error())
+	if app.DebugMode() {
+		if err := checkdbg.NewChecks(app).Run(); err != nil {
+			loger.Errorf("check error %v", err)
+			errProcessExit("Check failed", err.Error())
+		}
 	}
-
 	// GUI
-	k, err := pdfkm.New(app)
-	if err != nil {
-		errProcessExit("ошибка создание генератора пдф", err.Error())
-	}
-	guiApp, err := gui.New(k, app)
+	guiApp, err := gui.New(app)
 	if err != nil {
 		errProcessExit("создание gui с ошибкой ", err.Error())
 	}

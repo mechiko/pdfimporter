@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"pdfimporter/domain"
 	"pdfimporter/domain/models/application"
-	"pdfimporter/pdfkm"
 	"pdfimporter/reductor"
 	"time"
 
@@ -60,9 +59,11 @@ type GuiApp struct {
 	progres   *tk.TProgressbarWidget
 	progresCh chan float64
 	isProcess bool
+	cis       string
+	kigu      string
 }
 
-func New(p *pdfkm.Pdf, app domain.Apper) (*GuiApp, error) {
+func New(app domain.Apper) (*GuiApp, error) {
 	a := &GuiApp{
 		Apper: app,
 		// pdf:   p,
@@ -178,6 +179,7 @@ func (a *GuiApp) tick() {
 		a.exitButton.Configure(tk.State("enabled"))
 		a.debugButton.Configure(tk.State("enabled"))
 	case file := <-a.stateSelectedCisFile:
+		a.cis = file
 		label := ""
 		if file != "" {
 			label = filepath.Base(file)
@@ -191,6 +193,7 @@ func (a *GuiApp) tick() {
 		a.exitButton.Configure(tk.State("enabled"))
 		a.debugButton.Configure(tk.State("enabled"))
 	case file := <-a.stateSelectedKiguFile:
+		a.kigu = file
 		label := ""
 		if file != "" {
 			label = filepath.Base(file)

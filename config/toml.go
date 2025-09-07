@@ -20,13 +20,13 @@ license = "f7bc886d-bbcd-4ce9-845f-1209d87d406d"
 `)
 
 type Configuration struct {
-	SsccPrefix      string `json:"ssccprefix"`
-	SsccStartNumber int    `json:"ssccstartnumber"`
-	PerPallet       int    `json:"perpallet"`
-	MarkTemplate    string `json:"marktemplate"`
-	PackTemplate    string `json:"packtemplate"`
-	// Application AppConfiguration    `json:"application"`
-	Layouts LayoutConfiguration `json:"layouts"`
+	SsccPrefix      string `mapstructure:"ssccprefix" toml:"ssccprefix" json:"ssccprefix"`
+	SsccStartNumber int    `mapstructure:"ssccstartnumber" toml:"ssccstartnumber" json:"ssccstartnumber"`
+	PerPallet       int    `mapstructure:"perpallet" toml:"perpallet" json:"perpallet"`
+	MarkTemplate    string `mapstructure:"marktemplate" toml:"marktemplate" json:"marktemplate"`
+	PackTemplate    string `mapstructure:"packtemplate" toml:"packtemplate" json:"packtemplate"`
+	// Application AppConfiguration `mapstructure:"application" toml:"application" json:"application"`
+	Layouts LayoutConfiguration `mapstructure:"layouts" toml:"layouts" json:"layouts"`
 	// описатели БД рефактор
 	// Config    DatabaseConfiguration `json:"config"`
 	// AlcoHelp3 DatabaseConfiguration `json:"alcohelp3"`
@@ -37,46 +37,46 @@ type Configuration struct {
 }
 
 type LayoutConfiguration struct {
-	TimeLayout      string `json:"timelayout"`
-	TimeLayoutClear string `json:"timelayoutclear"`
-	TimeLayoutDay   string `json:"timelayoutday"`
-	TimeLayoutUTC   string `json:"timelayoututc"`
+	TimeLayout      string `mapstructure:"timelayout" toml:"timelayout" json:"timelayout"`
+	TimeLayoutClear string `mapstructure:"timelayoutclear" toml:"timelayoutclear" json:"timelayoutclear"`
+	TimeLayoutDay   string `mapstructure:"timelayoutday" toml:"timelayoutday" json:"timelayoutday"`
+	TimeLayoutUTC   string `mapstructure:"timelayoututc" toml:"timelayoututc" json:"timelayoututc"`
 }
 
 type DatabaseConfiguration struct {
-	Connection string `json:"connection"`
-	Driver     string `json:"driver"`
-	DbName     string `json:"dbname"`
-	File       string `json:"file"`
-	User       string `json:"user"`
-	Pass       string `json:"pass"`
-	Host       string `json:"host"`
-	Port       string `json:"port"`
+	Connection string `mapstructure:"connection" toml:"connection" json:"connection"`
+	Driver     string `mapstructure:"driver" toml:"driver" json:"driver"`
+	DbName     string `mapstructure:"dbname" toml:"dbname" json:"dbname"`
+	File       string `mapstructure:"file" toml:"file" json:"file"`
+	User       string `mapstructure:"user" toml:"user" json:"user"`
+	Pass       string `mapstructure:"pass" toml:"pass" json:"pass"`
+	Host       string `mapstructure:"host" toml:"host" json:"host"`
+	Port       string `mapstructure:"port" toml:"port" json:"port"`
 }
 
 type AppConfiguration struct {
 	// Pwd          string `json:"pwd"`
 	// Console      bool   `json:"console"`
 	// Disconnected bool   `json:"disconnected"`
-	Fsrarid string `json:"fsrarid"`
+	Fsrarid string `mapstructure:"fsrarid" toml:"fsrarid" json:"fsrarid"`
 	// DbType       string `json:"dbtype"`
-	License string `json:"license"`
+	License string `mapstructure:"license" toml:"license" json:"license"`
 	// ScanTimer    int    `json:"scantimer"`
-	StartPage string `json:"startpage"`
+	StartPage string `mapstructure:"startpage" toml:"startpage" json:"startpage"`
 }
 
 type TrueClientConfig struct {
-	Test        bool   `json:"test"`
-	StandGIS    string `json:"standgis"`
-	StandSUZ    string `json:"standsuz"`
-	TestGIS     string `json:"testgis"`
-	TestSUZ     string `json:"testsuz"`
-	TokenGIS    string `json:"tokengis"`
-	TokenSUZ    string `json:"tokensuz"`
-	AuthTime    string `json:"authtime"`
-	LayoutUTC   string `json:"layoututc"`
-	HashKey     string `json:"hashkey"`
-	DeviceID    string `json:"deviceid"`
-	OmsID       string `json:"omsid"`
-	UseConfigDB bool   `json:"useconfigdb"`
+	Test        bool   `mapstructure:"test" toml:"test" json:"test"`
+	StandGIS    string `mapstructure:"standgis" toml:"standgis" json:"standgis"`
+	StandSUZ    string `mapstructure:"standsuz" toml:"standsuz" json:"standsuz"`
+	TestGIS     string `mapstructure:"testgis" toml:"testgis" json:"testgis"`
+	TestSUZ     string `mapstructure:"testsuz" toml:"testsuz" json:"testsuz"`
+	TokenGIS    string `mapstructure:"tokengis" toml:"tokengis" json:"tokengis"`
+	TokenSUZ    string `mapstructure:"tokensuz" toml:"tokensuz" json:"tokensuz"`
+	AuthTime    string `mapstructure:"authtime" toml:"authtime" json:"authtime"`
+	LayoutUTC   string `mapstructure:"layoututc" toml:"layoututc" json:"layoututc"`
+	HashKey     string `mapstructure:"hashkey" toml:"hashkey" json:"hashkey"`
+	DeviceID    string `mapstructure:"deviceid" toml:"deviceid" json:"deviceid"`
+	OmsID       string `mapstructure:"omsid" toml:"omsid" json:"omsid"`
+	UseConfigDB bool   `mapstructure:"useconfigdb" toml:"useconfigdb" json:"useconfigdb"`
 }

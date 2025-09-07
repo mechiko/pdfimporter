@@ -31,7 +31,7 @@ type ConfigDialog struct {
 	cancelButton *tk.TButtonWidget
 
 	datamatrixCombo *tk.TComboboxWidget
-	barCombo        *tk.TComboboxWidget
+	packCombo       *tk.TComboboxWidget
 }
 
 func NewConfigDialog(data *ConfigDialogData) *ConfigDialog {
@@ -43,6 +43,7 @@ func NewConfigDialog(data *ConfigDialogData) *ConfigDialog {
 
 	dlg.makeWidgets()
 	dlg.makeLayout()
+	dlg.makeBindings()
 	return dlg
 }
 

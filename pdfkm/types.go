@@ -1,11 +1,11 @@
 package pdfkm
 
 import (
-	"encoding/json"
 	"fmt"
 	"pdfimporter/assets"
 	"pdfimporter/domain"
-	"pdfimporter/pdfproc"
+	"pdfimporter/domain/models/application"
+	"pdfimporter/reductor"
 
 	"github.com/mechiko/utility"
 )
@@ -22,42 +22,42 @@ type Pdf struct {
 	warnings           []string
 	errors             []string
 	assets             *assets.Assets
-	templateDatamatrix *pdfproc.MarkTemplate
-	templateBar        *pdfproc.MarkTemplate
+	templateDatamatrix *domain.MarkTemplate
+	templatePack       *domain.MarkTemplate
 }
 
 func New(app domain.Apper) (p *Pdf, err error) {
 	p = &Pdf{
-		Apper:    app,
-		warnings: make([]string, 0),
-		errors:   make([]string, 0),
-		Cis:      make([]*utility.CisInfo, 0),
-		Kigu:     make([]*utility.CisInfo, 0),
-		Sscc:     make([]string, 0),
-		Pallet:   make(map[string][]*utility.CisInfo),
+		Apper:              app,
+		warnings:           make([]string, 0),
+		errors:             make([]string, 0),
+		Cis:                make([]*utility.CisInfo, 0),
+		Kigu:               make([]*utility.CisInfo, 0),
+		Sscc:               make([]string, 0),
+		Pallet:             make(map[string][]*utility.CisInfo),
+		templateDatamatrix: nil,
+		templatePack:       nil,
 	}
 	p.Reset()
 	p.assets, err = assets.New("assets")
 	if err != nil {
-		return nil, fmt.Errorf("Error assets: %v", err)
+		return nil, fmt.Errorf("Error assets: %w", err)
 	}
-	tmplDatamatrixJson, err := p.assets.Json("datamatrix")
+	mdl, err := GetModel()
 	if err != nil {
-		return nil, fmt.Errorf("Error reading file: %v", err)
+		return nil, fmt.Errorf("Error get model: %w", err)
 	}
-	tmplBarJson, err := p.assets.Json("bar")
-	if err != nil {
-		return nil, fmt.Errorf("Error reading file: %v", err)
+	if mdl.MarkTemplate != "" {
+		p.templateDatamatrix, err = p.assets.Template(mdl.MarkTemplate)
+		if err != nil {
+			return nil, fmt.Errorf("Error get assets datamatrix template %s: %w", mdl.MarkTemplate, err)
+		}
 	}
-	p.templateDatamatrix = &pdfproc.MarkTemplate{}
-	err = json.Unmarshal(tmplDatamatrixJson, p.templateDatamatrix)
-	if err != nil {
-		return nil, fmt.Errorf("Error unmarshal file: %v", err)
-	}
-	p.templateBar = &pdfproc.MarkTemplate{}
-	err = json.Unmarshal(tmplBarJson, p.templateBar)
-	if err != nil {
-		return nil, fmt.Errorf("Error unmarshal file: %v", err)
+	if mdl.PackTemplate != "" {
+		p.templatePack, err = p.assets.Template(mdl.PackTemplate)
+		if err != nil {
+			return nil, fmt.Errorf("Error get assets pack template %s: %w", mdl.PackTemplate, err)
+		}
 	}
 	return p, nil
 }
@@ -96,4 +96,16 @@ func (k *Pdf) Reset() {
 
 func (k *Pdf) LastSSCC() int {
 	return k.lastSSCC
+}
+
+func GetModel() (*application.Application, error) {
+	modelReductor, err := reductor.Instance().Model(domain.Application)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get model from reductor: %w", err)
+	}
+	model, ok := modelReductor.(*application.Application)
+	if !ok {
+		return nil, fmt.Errorf("model is not of type *application.Application")
+	}
+	return model, nil
 }

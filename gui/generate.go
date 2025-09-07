@@ -1,7 +1,6 @@
 package gui
 
 import (
-	"errors"
 	"fmt"
 	"pdfimporter/pdfkm"
 	"pdfimporter/reductor"
@@ -43,25 +42,19 @@ func (a *GuiApp) generate() {
 		logerr("gui generate", err)
 		return
 	}
-
+	// проверяем файлы
+	err = pdfkm.CheckFilesBoth(model.FileCIS, model.FileKIGU, model.PerPallet)
+	if err != nil {
+		logerr("ошибка проверки файлов: ", err)
+		return
+	}
 	a.SendLog("считываем файл КМ")
 	if err := pdfGenerator.ReadCIS(model); err != nil {
 		model.FileCIS = ""
 		logerr("ошибка загрузки файла:", err)
 		return
 	}
-	if len(pdfGenerator.Cis) == 0 {
-		model.FileCIS = ""
-		logerr("в файле КМ:", errors.New("0 cis"))
-		return
-	}
-	remainder := len(pdfGenerator.Cis) % model.PerPallet
 	numberPacks := len(pdfGenerator.Cis) / model.PerPallet
-	if remainder != 0 {
-		model.FileCIS = ""
-		logerr("в файле КМ:", fmt.Errorf("количество КМ %d не кратно упаковке %d остается %d", len(pdfGenerator.Cis), model.PerPallet, remainder))
-		return
-	}
 	a.SendLog(fmt.Sprintf("считано %d КМ %d упаковок", len(pdfGenerator.Cis), numberPacks))
 
 	a.SendLog("считываем файл КИГУ")
@@ -70,19 +63,9 @@ func (a *GuiApp) generate() {
 		logerr("ошибка загрузки файла:", err)
 		return
 	}
-	if len(pdfGenerator.Kigu) == 0 {
-		model.FileKIGU = ""
-		logerr("в файле КИГУ:", errors.New("0 KIGU"))
-		return
-	}
 	a.SendLog(fmt.Sprintf("считано %d КИГУ", len(pdfGenerator.Kigu)))
 
-	if len(pdfGenerator.Kigu) != numberPacks {
-		model.FileKIGU = ""
-		logerr("в файле КИГУ:", fmt.Errorf("найдено %d, а необходимо %d", len(pdfGenerator.Kigu), numberPacks))
-		return
-	}
-	if err := pdfGenerator.GeneratePallet(model); err != nil {
+	if err := pdfGenerator.GeneratePack(model); err != nil {
 		logerr("gui generate debug", err)
 		return
 	}
@@ -94,21 +77,21 @@ func (a *GuiApp) generate() {
 		}
 		return
 	}
-	a.Options().SsccStartNumber = pdfGenerator.LastSSCC()
-	if err := a.SetOptions("ssccstartnumber", pdfGenerator.LastSSCC()); err != nil {
-		logerr("gui generate", err)
-		return
-	}
-	modelFinal, err := GetModel()
-	if err != nil {
-		logerr("gui generate debug", err)
-		return
-	}
-	modelFinal.SsccStartNumber = pdfGenerator.LastSSCC()
-	if err := reductor.Instance().SetModel(modelFinal, false); err != nil {
-		logerr("gui generate debug", err)
-		return
-	}
+	// a.Options().SsccStartNumber = pdfGenerator.LastSSCC()
+	// if err := a.SetOptions("ssccstartnumber", pdfGenerator.LastSSCC()); err != nil {
+	// 	logerr("gui generate", err)
+	// 	return
+	// }
+	// modelFinal, err := GetModel()
+	// if err != nil {
+	// 	logerr("gui generate debug", err)
+	// 	return
+	// }
+	// modelFinal.SsccStartNumber = pdfGenerator.LastSSCC()
+	// if err := reductor.Instance().SetModel(modelFinal, false); err != nil {
+	// 	logerr("gui generate debug", err)
+	// 	return
+	// }
 	a.SendLog(fileName)
 	if csvName, err := pdfGenerator.PaletSave("pallets"); err != nil {
 		logerr("gui save palet csv", err)

@@ -1,6 +1,9 @@
-package pdfproc
+package domain
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/mechiko/maroto/v2/pkg/consts/align"
 	"github.com/mechiko/maroto/v2/pkg/consts/barcode"
 	"github.com/mechiko/maroto/v2/pkg/consts/border"
@@ -74,7 +77,7 @@ func (p *RowPrimitive) PropsBar() props.Barcode {
 	}
 }
 
-var colStyle = &props.Cell{
+var ColStyle = &props.Cell{
 	BackgroundColor: &props.Color{Red: 128, Green: 128, Blue: 128},
 	BorderType:      border.None,
 	BorderColor:     &props.Color{Red: 200, Green: 0, Blue: 0},
@@ -92,4 +95,13 @@ type MarkTemplate struct {
 	PageWidth  float64
 	PageHeight float64
 	Rows       map[string][]*RowPrimitive
+}
+
+func NewMarkTemplate(tmpl []byte) (*MarkTemplate, error) {
+	mt := &MarkTemplate{}
+	err := json.Unmarshal(tmpl, mt)
+	if err != nil {
+		return nil, fmt.Errorf("Error unmarshal file: %v", err)
+	}
+	return mt, nil
 }

@@ -72,11 +72,9 @@ func (a *Assets) Json(name string) (b []byte, err error) {
 func (a *Assets) Templates() (out []string, err error) {
 	a.mutex.Lock()
 	defer a.mutex.Unlock()
-	out = make([]string, len(a.json))
-	i := 0
+	out = make([]string, 0, len(a.templateNames))
 	for key := range a.templateNames {
-		out[i] = key
-		i++
+		out = append(out, key)
 	}
 	return out, nil
 }

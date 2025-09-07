@@ -10,34 +10,24 @@ import (
 
 type pdfProc struct {
 	domain.Apper
-	maroto             core.Maroto
-	assets             *assets.Assets
-	templateDatamatrix *MarkTemplate
-	templateBar        *MarkTemplate
-	document           core.Document
-	debug              bool
-	height             float64
-	width              float64
+	maroto   core.Maroto
+	assets   *assets.Assets
+	document core.Document
+	debug    bool
+	height   float64
+	width    float64
 }
 
-func New(app domain.Apper, tmplDatamatrix, tmplBar *MarkTemplate, assets *assets.Assets) (*pdfProc, error) {
+func New(app domain.Apper, assets *assets.Assets) (*pdfProc, error) {
 	if app == nil {
 		return nil, fmt.Errorf("app is nil")
 	}
 	if assets == nil {
 		return nil, fmt.Errorf("assets is nil")
 	}
-	if tmplDatamatrix == nil || tmplBar == nil {
-		return nil, fmt.Errorf("mark templates must not be nil")
-	}
 	p := &pdfProc{
-		Apper:              app,
-		templateDatamatrix: tmplDatamatrix,
-		templateBar:        tmplBar,
-		assets:             assets,
+		Apper:  app,
+		assets: assets,
 	}
-	// if err := p.BuildMaroto(); err != nil {
-	// 	return nil, fmt.Errorf("build maroto error %w", err)
-	// }
 	return p, nil
 }

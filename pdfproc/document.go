@@ -2,6 +2,7 @@ package pdfproc
 
 import (
 	"fmt"
+	"pdfimporter/domain"
 	"pdfimporter/embeded"
 
 	"github.com/mechiko/maroto/v2"
@@ -74,7 +75,7 @@ func (p *pdfProc) DocumentGenerate() (err error) {
 	return nil
 }
 
-func (p *pdfProc) AddPageByTemplate(tmpl *MarkTemplate, kod string, ser string, idx string) error {
+func (p *pdfProc) AddPageByTemplate(tmpl *domain.MarkTemplate, kod string, ser string, idx string) error {
 	if tmpl == nil {
 		return fmt.Errorf("add page: template is nil")
 	}

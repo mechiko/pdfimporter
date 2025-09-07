@@ -13,7 +13,10 @@ import (
 )
 
 func (k *Pdf) Document(model *application.Application, ch chan float64) (string, error) {
-	pdfDocument, err := pdfproc.New(k, k.templateDatamatrix, k.templateBar, k.assets)
+	if k.templateDatamatrix == nil {
+		return "", fmt.Errorf("Error pdfkm datamatrix template is nil ")
+	}
+	pdfDocument, err := pdfproc.New(k, k.assets)
 	if err != nil {
 		return "", fmt.Errorf("Error create pdfproc: %v", err)
 	}
@@ -47,7 +50,9 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 			idxCis++
 		}
 		kigu := k.Kigu[idxKigu]
-		pdfDocument.AddPageByTemplate(k.templateBar, kigu.Code, "", "")
+		if k.templatePack != nil {
+			pdfDocument.AddPageByTemplate(k.templatePack, kigu.Code, "", "")
+		}
 		ch <- step * float64(i)
 		i++
 		// в режиме отладки берем только 26 знаков если их больше

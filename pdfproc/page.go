@@ -2,6 +2,7 @@ package pdfproc
 
 import (
 	"fmt"
+	"pdfimporter/domain"
 	"slices"
 	"strings"
 
@@ -14,7 +15,7 @@ import (
 	"github.com/mechiko/maroto/v2/pkg/core"
 )
 
-func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (core.Page, error) {
+func (p *pdfProc) Page(t *domain.MarkTemplate, kod string, ser string, idx string) (core.Page, error) {
 	pg := page.New()
 	rowKeys := make([]string, 0, len(t.Rows))
 	for k := range t.Rows {
@@ -56,7 +57,7 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (cor
 						code.NewMatrix(kod, rowSingle.PropsRect()),
 					)
 					if rowSingle.ImageDebug {
-						cols[i].WithStyle(colStyle)
+						cols[i].WithStyle(domain.ColStyle)
 					}
 				}
 				if rowSingle.Bar != "" {
@@ -64,7 +65,7 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (cor
 						code.NewBar(kod, rowSingle.PropsBar()),
 					)
 					if rowSingle.ImageDebug {
-						cols[i].WithStyle(colStyle)
+						cols[i].WithStyle(domain.ColStyle)
 					}
 				}
 				if rowSingle.Image != "" {
@@ -80,7 +81,7 @@ func (p *pdfProc) Page(t *MarkTemplate, kod string, ser string, idx string) (cor
 							image.NewFromBytes(img, rowSingle.ImageExt, rowSingle.PropsRect()),
 						)
 						if rowSingle.ImageDebug {
-							cols[i].WithStyle(colStyle)
+							cols[i].WithStyle(domain.ColStyle)
 						}
 					} else {
 						return nil, fmt.Errorf("page image assets not available (assets is nil) for %q", rowSingle.Image)
