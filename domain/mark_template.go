@@ -103,5 +103,14 @@ func NewMarkTemplate(tmpl []byte) (*MarkTemplate, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Error unmarshal file: %v", err)
 	}
+	if mt.Name == "" {
+		return nil, fmt.Errorf("mark template: name is empty")
+	}
+	if mt.PageWidth <= 0 || mt.PageHeight <= 0 {
+		return nil, fmt.Errorf("mark template: invalid page size %.2fx%.2f", mt.PageWidth, mt.PageHeight)
+	}
+	if mt.Rows == nil {
+		return nil, fmt.Errorf("mark template: rows are nil")
+	}
 	return mt, nil
 }

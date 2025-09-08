@@ -149,10 +149,6 @@ func (a *GuiApp) tick() {
 	case <-a.stateStart:
 		// состояние начала возможно уже выбран файл
 		a.progres.Configure(tk.Value(0))
-		a.fileBtnCis.Configure(tk.State("enabled"))
-		a.startButton.Configure(tk.State("disabled"))
-		a.exitButton.Configure(tk.State("enabled"))
-		a.debugButton.Configure(tk.State("enabled"))
 	case <-a.stateFinish:
 		// состояние после записи заказов магазина в БД
 		model, err := GetModel()
@@ -160,59 +156,41 @@ func (a *GuiApp) tick() {
 			a.Logger().Errorf("gui stateFinish getmodel error %s", err.Error())
 		}
 		model.FileCIS = ""
+		model.FileKIGU = ""
 		if err := reductor.Instance().SetModel(model, false); err != nil {
 			a.Logger().Errorf("gui stateFinish setmodel error %s", err.Error())
 		}
 		a.fileLblCis.Configure(tk.Txt(""))
+		a.fileLblKigu.Configure(tk.Txt(""))
 		a.progres.Configure(tk.Value(0))
-		a.fileBtnCis.Configure(tk.State("enabled"))
-		a.fileBtnKigu.Configure(tk.State("enabled"))
-		a.startButton.Configure(tk.State("disabled"))
-		a.exitButton.Configure(tk.State("enabled"))
-		a.debugButton.Configure(tk.State("enabled"))
 	case <-a.stateFinishDebug:
-		// состояние после test
-		a.progres.Configure(tk.Value(0))
-		a.fileBtnCis.Configure(tk.State("enabled"))
-		a.fileBtnKigu.Configure(tk.State("enabled"))
-		a.startButton.Configure(tk.State("disabled"))
-		a.exitButton.Configure(tk.State("enabled"))
-		a.debugButton.Configure(tk.State("enabled"))
 	case file := <-a.stateSelectedCisFile:
 		a.cis = file
 		label := ""
 		if file != "" {
 			label = filepath.Base(file)
-			a.startButton.Configure(tk.State("enabled"))
-		} else {
-			a.startButton.Configure(tk.State("disabled"))
 		}
 		a.fileLblCis.Configure(tk.Txt(label))
-		a.progres.Configure(tk.Value(0))
-		a.fileBtnCis.Configure(tk.State("enabled"))
-		a.exitButton.Configure(tk.State("enabled"))
-		a.debugButton.Configure(tk.State("enabled"))
 	case file := <-a.stateSelectedKiguFile:
 		a.kigu = file
 		label := ""
 		if file != "" {
 			label = filepath.Base(file)
-			a.startButton.Configure(tk.State("enabled"))
-		} else {
-			a.startButton.Configure(tk.State("disabled"))
 		}
 		a.fileLblKigu.Configure(tk.Txt(label))
-		a.progres.Configure(tk.Value(0))
-		a.fileBtnKigu.Configure(tk.State("enabled"))
-		a.exitButton.Configure(tk.State("enabled"))
-		a.debugButton.Configure(tk.State("enabled"))
 	case a.isProcess = <-a.stateIsProcess:
 		if a.isProcess {
 			a.fileBtnCis.Configure(tk.State("disabled"))
 			a.fileBtnKigu.Configure(tk.State("disabled"))
+			a.startButton.Configure(tk.State("disabled"))
+			a.exitButton.Configure(tk.State("disabled"))
+			a.debugButton.Configure(tk.State("disabled"))
 		} else {
 			a.fileBtnCis.Configure(tk.State("enabled"))
 			a.fileBtnKigu.Configure(tk.State("enabled"))
+			a.startButton.Configure(tk.State("enabled"))
+			a.exitButton.Configure(tk.State("enabled"))
+			a.debugButton.Configure(tk.State("enabled"))
 		}
 	default:
 	}

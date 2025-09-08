@@ -18,7 +18,7 @@ func CheckFiles(cis, kigu string, perPack int) (err error) {
 		}
 	}
 	if utility.PathOrFileExists(kigu) {
-		kiguArray, err = ReadTextStringArrayFirstColon(cis)
+		kiguArray, err = ReadTextStringArrayFirstColon(kigu)
 		if err != nil {
 			return fmt.Errorf("read file %s error %w", kigu, err)
 		}
@@ -59,7 +59,7 @@ func CheckFilesBoth(cis, kigu string, perPack int) (err error) {
 		return fmt.Errorf("file cis %s not found", cis)
 	}
 	if utility.PathOrFileExists(kigu) {
-		kiguArray, err = ReadTextStringArrayFirstColon(cis)
+		kiguArray, err = ReadTextStringArrayFirstColon(kigu)
 		if err != nil {
 			return fmt.Errorf("read file %s error %w", kigu, err)
 		}

@@ -56,52 +56,48 @@ func (a *GuiApp) generate() {
 	}
 	numberPacks := len(pdfGenerator.Cis) / model.PerPallet
 	a.SendLog(fmt.Sprintf("считано %d КМ %d упаковок", len(pdfGenerator.Cis), numberPacks))
-
-	a.SendLog("считываем файл КИГУ")
-	if err := pdfGenerator.ReadKIGU(model); err != nil {
-		model.FileKIGU = ""
-		logerr("ошибка загрузки файла:", err)
-		return
-	}
-	a.SendLog(fmt.Sprintf("считано %d КИГУ", len(pdfGenerator.Kigu)))
-
-	if err := pdfGenerator.GeneratePack(model); err != nil {
-		logerr("gui generate debug", err)
-		return
-	}
-	fileName, err := pdfGenerator.Document(model, a.progresCh)
-	if err != nil {
-		logerr("gui generate debug", err)
-		if model != nil && model.FileCIS != "" {
-			a.stateSelectedCisFile <- model.FileCIS
+	if model.FileKIGU != "" {
+		a.SendLog("считываем файл КИГУ")
+		if err := pdfGenerator.ReadKIGU(model); err != nil {
+			model.FileKIGU = ""
+			logerr("ошибка загрузки файла:", err)
+			return
 		}
-		return
-	}
-	// a.Options().SsccStartNumber = pdfGenerator.LastSSCC()
-	// if err := a.SetOptions("ssccstartnumber", pdfGenerator.LastSSCC()); err != nil {
-	// 	logerr("gui generate", err)
-	// 	return
-	// }
-	// modelFinal, err := GetModel()
-	// if err != nil {
-	// 	logerr("gui generate debug", err)
-	// 	return
-	// }
-	// modelFinal.SsccStartNumber = pdfGenerator.LastSSCC()
-	// if err := reductor.Instance().SetModel(modelFinal, false); err != nil {
-	// 	logerr("gui generate debug", err)
-	// 	return
-	// }
-	a.SendLog(fileName)
-	if csvName, err := pdfGenerator.PaletSave("pallets"); err != nil {
-		logerr("gui save palet csv", err)
-		return
+		a.SendLog(fmt.Sprintf("считано %d КИГУ", len(pdfGenerator.Kigu)))
+		if err := pdfGenerator.GeneratePack(model); err != nil {
+			logerr("gui generate GeneratePack", err)
+			return
+		}
+		fileName, err := pdfGenerator.Document(model, a.progresCh)
+		if err != nil {
+			logerr("gui generate document", err)
+			if model != nil && model.FileCIS != "" {
+				a.stateSelectedCisFile <- model.FileCIS
+			}
+			return
+		}
+		a.SendLog(fileName)
+		if csvName, err := pdfGenerator.PaletSave("pallets"); err != nil {
+			logerr("gui save palet csv", err)
+			return
+		} else {
+			a.SendLog(csvName)
+		}
+		if a.DebugMode() {
+			utility.OpenFileInShell(fileName)
+		}
 	} else {
-		a.SendLog(csvName)
+		fileName, err := pdfGenerator.DocumentWithoutPack(model, a.progresCh)
+		if err != nil {
+			logerr("gui generate document", err)
+			if model != nil && model.FileCIS != "" {
+				a.stateSelectedCisFile <- model.FileCIS
+			}
+			return
+		}
+		a.SendLog(fileName)
+		if a.DebugMode() {
+			utility.OpenFileInShell(fileName)
+		}
 	}
-	if a.DebugMode() {
-		utility.OpenFileInShell(fileName)
-	}
-	// по завершению обработки в БД кнопка Пуск запрещена
-	a.stateFinish <- struct{}{}
 }

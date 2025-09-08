@@ -9,7 +9,6 @@ import (
 
 // должна выполнятся как gorutine
 func (a *GuiApp) openFileCis(file string) {
-	a.cis = file
 	logerr := func(s string, err error) {
 		if err != nil {
 			a.Logger().Errorf("%s %s", s, err.Error())
@@ -45,7 +44,6 @@ func (a *GuiApp) openFileCis(file string) {
 }
 
 func (a *GuiApp) openFileKigu(file string) {
-	a.kigu = file
 	logerr := func(s string, err error) {
 		if err != nil {
 			a.Logger().Errorf("%s %s", s, err.Error())
@@ -71,7 +69,7 @@ func (a *GuiApp) openFileKigu(file string) {
 	}
 	a.logClear <- struct{}{}
 	a.SendLog("проверяем файл КИГУ")
-	err = pdfkm.CheckFiles(a.cis, a.kigu, model.PerPallet)
+	err = pdfkm.CheckFiles(model.FileCIS, model.FileKIGU, model.PerPallet)
 	if err != nil {
 		logerr("ошибка проверки файлов: ", err)
 		return

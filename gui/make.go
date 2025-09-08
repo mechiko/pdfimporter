@@ -81,7 +81,7 @@ func (a *GuiApp) makeInputs(model *application.Application) {
 func (a *GuiApp) makeButtons() {
 	a.buttonFrame = tk.TFrame()
 	a.exitButton = a.buttonFrame.TExit(tk.Txt("Выход"))
-	a.startButton = a.buttonFrame.TButton(tk.Txt("Пуск"), tk.State("disabled"), tk.Command(func() {
+	a.startButton = a.buttonFrame.TButton(tk.Txt("Пуск"), tk.State("enabled"), tk.Command(func() {
 		if a.isProcess {
 			return
 		}
@@ -100,9 +100,17 @@ func (a *GuiApp) makeButtons() {
 		go a.generateDebug()
 	}))
 	a.configButton = a.buttonFrame.TButton(tk.Txt("Настройка"),
-		tk.Command(a.onConfig))
+		tk.Command(func() {
+			if a.isProcess {
+				return
+			}
+			a.onConfig()
+		}))
 
 	a.fileBtnCis = a.inputFrame.TButton(tk.Txt("Открыть файл КМ"), tk.Command(func() {
+		if a.isProcess {
+			return
+		}
 		ff, err := utility.DialogOpenFile([]utility.FileType{utility.Csv, utility.All}, "", ".")
 		if err != nil {
 			a.logg("", err.Error())
@@ -114,6 +122,9 @@ func (a *GuiApp) makeButtons() {
 		go a.openFileCis(ff)
 	}))
 	a.fileBtnKigu = a.inputFrame.TButton(tk.Txt("Открыть файл КИГУ"), tk.Command(func() {
+		if a.isProcess {
+			return
+		}
 		ff, err := utility.DialogOpenFile([]utility.FileType{utility.Csv, utility.All}, "", ".")
 		if err != nil {
 			a.logg("", err.Error())

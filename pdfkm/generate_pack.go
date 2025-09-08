@@ -8,25 +8,21 @@ import (
 )
 
 func (k *Pdf) GeneratePack(model *application.Application) error {
-	indexPallet := 0
 	if k.Pallet == nil {
 		k.Pallet = make(map[string][]*utility.CisInfo)
 	}
-	for {
-		palet := k.Kigu[indexPallet].Cis
+	if model.PerPallet <= 0 {
+		return fmt.Errorf("perPalet %d must be great 0", model.PerPallet)
+	}
+	if len(k.Kigu) == 0 {
+		return fmt.Errorf("array kigu zero")
+	}
+	for indexPallet, kg := range k.Kigu {
+		palet := kg.Cis
 		if _, ok := k.Pallet[palet]; ok {
-			return fmt.Errorf("palet %s alredy present", palet)
+			return fmt.Errorf("palet %s already present", palet)
 		}
 		k.Pallet[palet] = nextRecords(k.Cis, indexPallet, model.PerPallet)
-		if len(k.Pallet[palet]) < model.PerPallet {
-			// выход если сгенерировано меньше чем единиц в упаковке
-			if len(k.Pallet[palet]) == 0 {
-				// если пустая палета
-				delete(k.Pallet, palet)
-			}
-			break
-		}
-		indexPallet++
 	}
 	return nil
 }

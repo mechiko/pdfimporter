@@ -91,7 +91,7 @@ func main() {
 
 	appModel, err := application.New(app)
 	if err != nil {
-		errProcessExit("Ошибка получения логера для редуктора", err.Error())
+		errProcessExit("Ошибка создания модели приложения", err.Error())
 	}
 	appModel.FileCIS = *file
 	if err := reductor.Instance().SetModel(appModel, false); err != nil {

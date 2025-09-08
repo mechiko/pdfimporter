@@ -17,10 +17,10 @@ func (me *ConfigDialog) makeInputs() {
 	me.perPalet = me.inputFrame.TEntry(tk.Textvariable(fmt.Sprintf("%d", me.data.PerPallet)))
 	me.startSSCC = me.inputFrame.TEntry(tk.Textvariable(fmt.Sprintf("%d", me.data.SsccStartNumber)))
 	me.prefixSSCC = me.inputFrame.TEntry(tk.Textvariable(me.data.PrefixSSCC))
-	tmplts := []string{}
+	tmplts := []string{""}
 	if asts, err := assets.New("assets"); err == nil {
 		if t, err := asts.Templates(); err == nil {
-			tmplts = t
+			tmplts = append(tmplts, t...)
 		}
 	}
 	if me.data.MarkTemplate == "" {
