@@ -32,7 +32,7 @@ func CheckBothFiles(cis, kigu string, perPack int) (err error) {
 		return fmt.Errorf("единиц в упаковке должно быть > 0")
 	}
 	if cis == "" {
-		return fmt.Errorf("имя файла КМ empty")
+		return fmt.Errorf("не указано имя файла КМ")
 	}
 	if utility.PathOrFileExists(cis) {
 		cisArray, err = ReadTextStringArrayFirstColon(cis)

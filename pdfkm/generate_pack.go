@@ -18,6 +18,10 @@ func (k *Pdf) GeneratePack(model *application.Application) error {
 		return fmt.Errorf("array kigu zero")
 	}
 	for indexPallet, kg := range k.Kigu {
+		if _, ok := k.Packs[kg.Cis]; !ok {
+			k.Packs[kg.Cis] = kg
+		}
+		k.PackOrder = append(k.PackOrder, kg.Cis)
 		palet := kg.Cis
 		if _, ok := k.Pallet[palet]; ok {
 			return fmt.Errorf("palet %s already present", palet)

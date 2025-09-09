@@ -17,6 +17,8 @@ type Pdf struct {
 	Cis                []*utility.CisInfo
 	Kigu               []*utility.CisInfo
 	Sscc               []string
+	PackOrder          []string
+	Packs              map[string]*utility.CisInfo
 	Pallet             map[string][]*utility.CisInfo
 	lastSSCC           int
 	warnings           []string
@@ -34,7 +36,9 @@ func New(app domain.Apper) (p *Pdf, err error) {
 		Cis:                make([]*utility.CisInfo, 0),
 		Kigu:               make([]*utility.CisInfo, 0),
 		Sscc:               make([]string, 0),
-		Pallet:             make(map[string][]*utility.CisInfo),
+		Pallet:             make(map[string][]*utility.CisInfo), // упаковки по cis kigu
+		Packs:              make(map[string]*utility.CisInfo),   // мап по cis kigu
+		PackOrder:          make([]string, 0),
 		templateDatamatrix: nil,
 		templatePack:       nil,
 	}

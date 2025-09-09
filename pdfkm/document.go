@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 	"pdfimporter/domain/models/application"
 	"pdfimporter/pdfproc"
-	"slices"
 	"strings"
 	"time"
 
@@ -15,6 +14,9 @@ import (
 func (k *Pdf) Document(model *application.Application, ch chan float64) (string, error) {
 	if k.templateDatamatrix == nil {
 		return "", fmt.Errorf("Error pdfkm datamatrix template is nil ")
+	}
+	if k.templatePack == nil {
+		return "", fmt.Errorf("Error pdfkm pack template is nil ")
 	}
 	pdfDocument, err := pdfproc.New(k, k.assets)
 	if err != nil {
@@ -31,46 +33,48 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 	if totalItems > 0 {
 		step = 99.0 / float64(totalItems)
 	}
-	packs := make([]string, 0, len(k.Pallet))
-	for k2 := range k.Pallet {
-		packs = append(packs, k2)
-	}
-	slices.Sort(packs)
+	// packs := make([]string, 0, len(k.Pallet))
+	// for k2 := range k.Pallet {
+	// 	packs = append(packs, k2)
+	// }
+	// slices.Sort(packs)
 	i := 0
-	idxCis := 1
+	idxCis := 0
 	idxKigu := 0
-	for _, pack := range packs {
+	for _, pack := range k.PackOrder {
 		cises := k.Pallet[pack]
 		for _, cis := range cises {
+			// генерируем КМ
 			fnc := cis.FNC1()
 			ser := cis.Serial
-			if err := pdfDocument.AddPageByTemplate(k.templateDatamatrix, fnc, ser, fmt.Sprintf("%06d", i+1)); err != nil {
+			if err := pdfDocument.AddPageByTemplate(k.templateDatamatrix, fnc, ser, fmt.Sprintf("%06d", idxCis+1)); err != nil {
 				return "", fmt.Errorf("add datamatrix page (idx %d): %w", i+1, err)
-			}
-			if ch != nil {
-				ch <- step * float64(i+1)
 			}
 			i++
 			idxCis++
-		}
-		if k.templatePack != nil {
-			if idxKigu >= len(k.Kigu) {
-				k.Logger().Warnf("missing KIGU for pack %s (idx %d)", pack, idxKigu)
-			} else {
-				kigu := k.Kigu[idxKigu]
-				if err := pdfDocument.AddPageByTemplate(k.templatePack, kigu.Code, "", ""); err != nil {
-					return "", fmt.Errorf("add pack page (pack %s, idx %d): %w", pack, idxKigu, err)
-				}
-				idxKigu++
+			if ch != nil {
+				ch <- step * float64(i+1)
 			}
 		}
+		if _, ok := k.Packs[pack]; !ok {
+			return "", fmt.Errorf("missing KIGU for pack %s", pack)
+		}
+		kigu := k.Packs[pack]
+		fnc := kigu.FNC1()
+		ser := kigu.Serial
+		// генерируем упаковку
+		if err := pdfDocument.AddPageByTemplate(k.templatePack, fnc, ser, fmt.Sprintf("%06d", idxKigu+1)); err != nil {
+			return "", fmt.Errorf("add pack page (pack %s, idx %d): %w", pack, idxKigu, err)
+		}
+		idxKigu++
 		i++
 		if ch != nil {
 			ch <- step * float64(i)
 		}
 		// в режиме отладки берем только 26 знаков если их больше
 		if k.DebugMode() {
-			if i > 26 {
+			// в отладке генерируем две палеты
+			if idxKigu > 1 {
 				break
 			}
 		}

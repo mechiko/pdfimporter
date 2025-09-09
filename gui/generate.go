@@ -83,7 +83,13 @@ func (a *GuiApp) generate() {
 			return
 		}
 		a.SendLog(fileName)
-		if csvName, err := pdfGenerator.PaletSave("pallets"); err != nil {
+		fileNameCsv := utility.TimeFileName("agregation_packs") + ".csv"
+		fileCsvSelect, err := utility.DialogSaveFile(utility.Csv, fileNameCsv, ".")
+		if err != nil {
+			logerr("генерация пдф: выбор для сохранение файла агрегации", err)
+			fileCsvSelect = fileNameCsv
+		}
+		if csvName, err := pdfGenerator.PackSave(fileCsvSelect); err != nil {
 			logerr("генерация пдф: сохранение файла агрегации", err)
 			return
 		} else {
