@@ -114,10 +114,6 @@ func (a *GuiApp) makeButtons() {
 		ff, err := utility.DialogOpenFile([]utility.FileType{utility.Csv, utility.All}, "", ".")
 		if err != nil {
 			a.logg("", err.Error())
-			return
-		}
-		if ff == "" { // user canceled
-			return
 		}
 		go a.openFileCis(ff)
 	}))
@@ -128,10 +124,6 @@ func (a *GuiApp) makeButtons() {
 		ff, err := utility.DialogOpenFile([]utility.FileType{utility.Csv, utility.All}, "", ".")
 		if err != nil {
 			a.logg("", err.Error())
-			return
-		}
-		if ff == "" { // user canceled
-			return
 		}
 		go a.openFileKigu(ff)
 	}))

@@ -109,8 +109,8 @@ func NewMarkTemplate(tmpl []byte) (*MarkTemplate, error) {
 	if mt.PageWidth <= 0 || mt.PageHeight <= 0 {
 		return nil, fmt.Errorf("mark template: invalid page size %.2fx%.2f", mt.PageWidth, mt.PageHeight)
 	}
-	if mt.Rows == nil {
-		return nil, fmt.Errorf("mark template: rows are nil")
+	if len(mt.Rows) == 0 {
+		return nil, fmt.Errorf("mark template: rows are empty")
 	}
 	return mt, nil
 }

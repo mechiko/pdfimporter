@@ -45,40 +45,44 @@ func (a *GuiApp) generateDebug() {
 	modelStore = *model
 
 	fileCisNormal := model.FileCIS
-	a.SendLog("считываем файл КМ")
 	if fileCisNormal != "" && utility.PathOrFileExists(fileCisNormal) {
+		a.SendLog("считываем 25 КМ из файла")
 		if err := pdfGenerator.ReadCIS(model); err != nil {
 			logerr("gui openFile ReadCSV", err)
 			return
 		}
-		if len(pdfGenerator.Cis) > 25 {
-			pdfGenerator.Cis = pdfGenerator.Cis[:25]
+		if len(pdfGenerator.Cis) < 26 {
+			logerr("для примера необходимо минимум 25 марок, для печати тестовых данных не выбирайте файл КМ", err)
+			return
 		}
+		pdfGenerator.Cis = pdfGenerator.Cis[:25]
 	} else {
+		a.SendLog("считываем 25 КМ из тестовых данных")
 		if err := pdfGenerator.ReadCisDebug(); err != nil {
 			logerr("gui ReadDebug debug ReadCSV", err)
 			return
 		}
 	}
-	a.SendLog(fmt.Sprintf("считано %d КМ", len(pdfGenerator.Cis)))
 
 	fileKiguNormal := model.FileCIS
-	a.SendLog("считываем файл КИГУ")
 	if fileKiguNormal != "" && utility.PathOrFileExists(fileKiguNormal) {
+		a.SendLog("считываем 2 КИГУ из файла")
 		if err := pdfGenerator.ReadKIGU(model); err != nil {
 			logerr("gui openFile ReadKigu", err)
 			return
 		}
-		if len(pdfGenerator.Kigu) > 1 {
-			pdfGenerator.Kigu = pdfGenerator.Kigu[:2]
+		if len(pdfGenerator.Kigu) < 2 {
+			logerr("для примера необходимо минимум 2 КИГУ, для печати тестовых данных не выбирайте файл КИГУ", err)
+			return
 		}
+		pdfGenerator.Kigu = pdfGenerator.Kigu[:2]
 	} else {
+		a.SendLog("считываем 2 КИГУ из тестовых данных")
 		if err := pdfGenerator.ReadKiguDebug(); err != nil {
 			logerr("gui ReadDebug debug ReadKiguDebug", err)
 			return
 		}
 	}
-	a.SendLog(fmt.Sprintf("считано %d КИГУ", len(pdfGenerator.Kigu)))
 
 	model.FileCIS = "TEST"
 	model.FileKIGU = "TEST"
@@ -100,5 +104,5 @@ func (a *GuiApp) generateDebug() {
 		a.stateSelectedCisFile <- modelStore.FileCIS
 		return
 	}
-	a.stateFinish <- struct{}{}
+	a.stateFinishDebug <- struct{}{}
 }

@@ -2,7 +2,6 @@ package gui
 
 import (
 	"fmt"
-	"path/filepath"
 	"pdfimporter/pdfkm"
 	"pdfimporter/reductor"
 )
@@ -33,14 +32,17 @@ func (a *GuiApp) openFileCis(file string) {
 		return
 	}
 	a.logClear <- struct{}{}
-	a.SendLog("проверяем файл КМ")
-	err = pdfkm.CheckFiles(a.cis, a.kigu, model.PerPallet)
-	if err != nil {
-		logerr("ошибка проверки файлов: ", err)
-		return
+	if file != "" {
+		a.SendLog("проверяем файл КМ")
+		size, err := pdfkm.CheckFile(file)
+		if err != nil {
+			logerr("ошибка проверки файлов: ", err)
+			return
+		}
+		a.SendLog(fmt.Sprintf("считано %d КМ", size))
 	}
-	// устанавливаем состояни для пуск
-	a.stateSelectedCisFile <- filepath.Base(file)
+	// устанавливаем состояни отображения gui
+	a.stateSelectedCisFile <- model.FileCIS
 }
 
 func (a *GuiApp) openFileKigu(file string) {
@@ -68,12 +70,15 @@ func (a *GuiApp) openFileKigu(file string) {
 		return
 	}
 	a.logClear <- struct{}{}
-	a.SendLog("проверяем файл КИГУ")
-	err = pdfkm.CheckFiles(model.FileCIS, model.FileKIGU, model.PerPallet)
-	if err != nil {
-		logerr("ошибка проверки файлов: ", err)
-		return
+	if file != "" {
+		a.SendLog("проверяем файл КИГУ")
+		size, err := pdfkm.CheckFile(file)
+		if err != nil {
+			logerr("ошибка проверки файлов: ", err)
+			return
+		}
+		a.SendLog(fmt.Sprintf("считано %d КМ", size))
 	}
-	// устанавливаем состояни для пуск
-	a.stateSelectedKiguFile <- filepath.Base(file)
+	// устанавливаем состояни отображения gui
+	a.stateSelectedKiguFile <- model.FileKIGU
 }

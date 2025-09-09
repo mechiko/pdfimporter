@@ -36,16 +36,22 @@ func (a *GuiApp) generate() {
 		}
 	}
 	a.logClear <- struct{}{}
+	tMark := fmt.Sprintf("выбран шаблон печати КМ: %s", model.MarkTemplate)
+	tPack := fmt.Sprintf("выбран шаблон печати КИГУ: %s", model.PackTemplate)
+	a.SendLog(tMark)
+	a.SendLog(tPack)
+
+	// проверяем файлы
+	err = pdfkm.CheckBothFiles(model.FileCIS, model.FileKIGU, model.PerPallet)
+	if err != nil {
+		logerr("ошибка проверки файлов: ", err)
+		return
+	}
+
 	a.SendLog("обрабатываем файлы...")
 	pdfGenerator, err := pdfkm.New(a)
 	if err != nil {
-		logerr("gui generate", err)
-		return
-	}
-	// проверяем файлы
-	err = pdfkm.CheckFilesBoth(model.FileCIS, model.FileKIGU, model.PerPallet)
-	if err != nil {
-		logerr("ошибка проверки файлов: ", err)
+		logerr("генерация пдф:", err)
 		return
 	}
 	a.SendLog("считываем файл КМ")
@@ -65,12 +71,12 @@ func (a *GuiApp) generate() {
 		}
 		a.SendLog(fmt.Sprintf("считано %d КИГУ", len(pdfGenerator.Kigu)))
 		if err := pdfGenerator.GeneratePack(model); err != nil {
-			logerr("gui generate GeneratePack", err)
+			logerr("генерация пдф: упаковка", err)
 			return
 		}
 		fileName, err := pdfGenerator.Document(model, a.progresCh)
 		if err != nil {
-			logerr("gui generate document", err)
+			logerr("генерация пдф: документ", err)
 			if model != nil && model.FileCIS != "" {
 				a.stateSelectedCisFile <- model.FileCIS
 			}
@@ -78,7 +84,7 @@ func (a *GuiApp) generate() {
 		}
 		a.SendLog(fileName)
 		if csvName, err := pdfGenerator.PaletSave("pallets"); err != nil {
-			logerr("gui save palet csv", err)
+			logerr("генерация пдф: сохранение файла агрегации", err)
 			return
 		} else {
 			a.SendLog(csvName)
@@ -89,7 +95,7 @@ func (a *GuiApp) generate() {
 	} else {
 		fileName, err := pdfGenerator.DocumentWithoutPack(model, a.progresCh)
 		if err != nil {
-			logerr("gui generate document", err)
+			logerr("генерация пдф: документ без упаковки", err)
 			if model != nil && model.FileCIS != "" {
 				a.stateSelectedCisFile <- model.FileCIS
 			}
@@ -100,4 +106,5 @@ func (a *GuiApp) generate() {
 			utility.OpenFileInShell(fileName)
 		}
 	}
+	a.stateFinish <- struct{}{}
 }

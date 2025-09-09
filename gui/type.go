@@ -59,8 +59,6 @@ type GuiApp struct {
 	progres   *tk.TProgressbarWidget
 	progresCh chan float64
 	isProcess bool
-	cis       string
-	kigu      string
 }
 
 func New(app domain.Apper) (*GuiApp, error) {
@@ -165,14 +163,12 @@ func (a *GuiApp) tick() {
 		a.progres.Configure(tk.Value(0))
 	case <-a.stateFinishDebug:
 	case file := <-a.stateSelectedCisFile:
-		a.cis = file
 		label := ""
 		if file != "" {
 			label = filepath.Base(file)
 		}
 		a.fileLblCis.Configure(tk.Txt(label))
 	case file := <-a.stateSelectedKiguFile:
-		a.kigu = file
 		label := ""
 		if file != "" {
 			label = filepath.Base(file)

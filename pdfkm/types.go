@@ -52,11 +52,17 @@ func New(app domain.Apper) (p *Pdf, err error) {
 		if err != nil {
 			return nil, fmt.Errorf("Error get assets datamatrix template %s: %w", mdl.MarkTemplate, err)
 		}
+	} else {
+		return nil, fmt.Errorf("не выбран шаблон печати в настройках")
 	}
 	if mdl.PackTemplate != "" {
 		p.templatePack, err = p.assets.Template(mdl.PackTemplate)
 		if err != nil {
 			return nil, fmt.Errorf("Error get assets pack template %s: %w", mdl.PackTemplate, err)
+		}
+	} else {
+		if mdl.FileKIGU != "" {
+			return nil, fmt.Errorf("не выбран шаблон печати для этикеток упаковки по файлу %s", mdl.FileKIGU)
 		}
 	}
 	return p, nil
