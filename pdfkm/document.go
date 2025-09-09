@@ -50,11 +50,11 @@ func (k *Pdf) Document(model *application.Application, ch chan float64) (string,
 			if err := pdfDocument.AddPageByTemplate(k.templateDatamatrix, fnc, ser, fmt.Sprintf("%06d", idxCis+1)); err != nil {
 				return "", fmt.Errorf("add datamatrix page (idx %d): %w", i+1, err)
 			}
-			i++
-			idxCis++
 			if ch != nil {
 				ch <- step * float64(i+1)
 			}
+			i++
+			idxCis++
 		}
 		if _, ok := k.Packs[pack]; !ok {
 			return "", fmt.Errorf("missing KIGU for pack %s", pack)
@@ -130,7 +130,7 @@ func (k *Pdf) DocumentWithoutPack(model *application.Application, ch chan float6
 
 	start := time.Now()
 
-	totalItems := len(k.Cis) + len(k.Pallet)
+	totalItems := len(k.Cis)
 	step := 0.0
 	if totalItems > 0 {
 		step = 99.0 / float64(totalItems)

@@ -93,9 +93,9 @@ func (k *Pdf) Errors() []string {
 }
 
 func (k *Pdf) Reset() {
-	for key := range k.Pallet {
-		delete(k.Pallet, key)
-	}
+	k.Pallet = make(map[string][]*utility.CisInfo)
+	k.Packs = make(map[string]*utility.CisInfo)
+	k.PackOrder = make([]string, 0)
 	k.Sscc = make([]string, 0)
 	k.Cis = make([]*utility.CisInfo, 0)
 	k.Kigu = make([]*utility.CisInfo, 0)
