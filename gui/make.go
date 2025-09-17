@@ -76,6 +76,8 @@ func (a *GuiApp) makeInputs(model *application.Application) {
 	a.fileLblCis = a.inputFrame.TLabel(tk.Txt(labelCis))
 	a.fileLblKigu = a.inputFrame.TLabel(tk.Txt(labelKigu))
 	a.progres = a.inputFrame.TProgressbar()
+	a.party = a.inputFrame.TEntry(tk.Textvariable(model.Party))
+	a.chunkSize = a.inputFrame.TEntry(tk.Textvariable(fmt.Sprintf("%d", model.ChunkSize)))
 }
 
 func (a *GuiApp) makeButtons() {

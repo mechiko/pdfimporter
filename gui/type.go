@@ -59,6 +59,8 @@ type GuiApp struct {
 	progres   *tk.TProgressbarWidget
 	progresCh chan float64
 	isProcess bool
+	party     *tk.TEntryWidget
+	chunkSize *tk.TEntryWidget
 }
 
 func New(app domain.Apper) (*GuiApp, error) {
@@ -90,9 +92,9 @@ func New(app domain.Apper) (*GuiApp, error) {
 	if err != nil {
 		return nil, fmt.Errorf("gui new get model %w", err)
 	}
-	a.makeBindings()
 	a.makeWidgets(model)
 	a.makeLayout()
+	a.makeBindings()
 	// start ticker only after widgets/layout are ready
 	tk.NewTicker(tick, a.tick)
 	if model.FileCIS != "" {

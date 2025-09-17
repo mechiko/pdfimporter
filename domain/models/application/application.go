@@ -16,9 +16,11 @@ type Application struct {
 	FileKIGU        string
 	MarkTemplate    string
 	PackTemplate    string
-	SsccPrefix      string `json:"ssccprefix"`
-	SsccStartNumber int    `json:"ssccstartnumber"`
-	PerPallet       int    `json:"perpallet"`
+	SsccPrefix      string
+	SsccStartNumber int
+	PerPallet       int
+	Party           string
+	ChunkSize       int64
 }
 
 var _ domain.Modeler = (*Application)(nil)
@@ -61,6 +63,14 @@ func (a *Application) SyncToStore(app domain.Apper) (err error) {
 	if err := app.SaveAllOptions(); err != nil {
 		return fmt.Errorf("model:application sync to store error %w", err)
 	}
+	err = app.SetOptions("party", a.Party)
+	if err != nil {
+		return fmt.Errorf("model:application save party to store error %w", err)
+	}
+	err = app.SetOptions("chunksize", a.ChunkSize)
+	if err != nil {
+		return fmt.Errorf("model:application save chunksize to store error %w", err)
+	}
 	return err
 }
 
@@ -76,6 +86,8 @@ func (a *Application) ReadState(app domain.Apper) (err error) {
 	a.PerPallet = opts.PerPallet
 	a.MarkTemplate = opts.MarkTemplate
 	a.PackTemplate = opts.PackTemplate
+	a.Party = opts.Party
+	a.ChunkSize = opts.ChunkSize
 	return nil
 }
 
