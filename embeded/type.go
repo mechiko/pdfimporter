@@ -4,16 +4,16 @@ import (
 	_ "embed"
 )
 
-//go:embed Arial-Unicode-MS.ttf
+//go:embed RobotoCondensed-Regular.ttf
 var Regular []byte
 
-//go:embed Arial-Unicode-Bold.ttf
+//go:embed RobotoCondensed-Bold.ttf
 var Bold []byte
 
-//go:embed Arial-Unicode-Italic.ttf
+//go:embed RobotoCondensed-Italic.ttf
 var Italic []byte
 
-//go:embed Arial-Unicode-Bold-Italic.ttf
+//go:embed RobotoCondensed-BoldItalic.ttf
 var BoldItalic []byte
 
 //go:embed cis.csv

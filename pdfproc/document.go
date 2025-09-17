@@ -38,7 +38,7 @@ func (p *pdfProc) PdfDocumentReportSave(fileName string) (err error) {
 }
 
 func (p *pdfProc) BuildMaroto(width, height float64) (err error) {
-	customFont := "arial-unicode-ms"
+	customFont := "roboto"
 	customFonts, err := repository.New().
 		AddUTF8FontFromBytes(customFont, fontstyle.Normal, embeded.Regular).
 		AddUTF8FontFromBytes(customFont, fontstyle.Italic, embeded.Italic).

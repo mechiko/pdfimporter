@@ -45,14 +45,16 @@ type RowPrimitive struct {
 	Image      string         `json:"image,omitempty"`
 	ImageExt   extension.Type `json:"image_ext,omitempty"`
 	ImageDebug bool           `json:"image_debug,omitempty"`
+	Family     string         `json:"family,omitempty"`
 }
 
 func (p *RowPrimitive) PropsText() props.Text {
 	return props.Text{
-		Top:   p.Top,
-		Style: p.Style,
-		Size:  p.FontSize,
-		Align: p.Align,
+		Top:    p.Top,
+		Style:  p.Style,
+		Size:   p.FontSize,
+		Align:  p.Align,
+		Family: p.Family,
 	}
 }
 
