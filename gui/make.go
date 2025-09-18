@@ -58,17 +58,17 @@ func (a *GuiApp) makeInputs(model *application.Application) {
 	if fileCis != "" {
 		base := filepath.Base(fileCis)
 		if len(base) > 50 {
-			labelCis = fmt.Sprintf("%.40s...%s", base, base[len(base)-10:])
+			labelCis = fmt.Sprintf("%.30s...%s", base, base[len(base)-10:])
 		} else {
 			labelCis = base
 		}
 	}
-	fileKigu := model.FileCIS
+	fileKigu := model.FileKIGU
 	labelKigu := ""
 	if fileKigu != "" {
 		base := filepath.Base(fileKigu)
 		if len(base) > 50 {
-			labelKigu = fmt.Sprintf("%.40s...%s", base, base[len(base)-10:])
+			labelKigu = fmt.Sprintf("%.30s...%s", base, base[len(base)-10:])
 		} else {
 			labelKigu = base
 		}

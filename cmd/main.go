@@ -22,7 +22,8 @@ var dir string
 
 // если home true то папка создается локально
 var home = flag.Bool("home", false, "")
-var file = flag.String("file", "", "file to parse xlsx")
+var filecis = flag.String("filecis", "", "file to parse xlsx")
+var filekigu = flag.String("filekigu", "", "file to parse xlsx")
 
 func init() {
 	flag.Parse()
@@ -93,7 +94,8 @@ func main() {
 	if err != nil {
 		errProcessExit("Ошибка создания модели приложения", err.Error())
 	}
-	appModel.FileCIS = *file
+	appModel.FileCIS = *filecis
+	appModel.FileKIGU = *filekigu
 	if err := reductor.Instance().SetModel(appModel, false); err != nil {
 		errProcessExit("Ошибка редуктора", err.Error())
 	}

@@ -75,14 +75,14 @@ func (p *pdfProc) DocumentGenerate() (err error) {
 	return nil
 }
 
-func (p *pdfProc) AddPageByTemplate(tmpl *domain.MarkTemplate, kod string, ser string, idx string) error {
+func (p *pdfProc) AddPageByTemplate(tmpl *domain.MarkTemplate, kod string, party string, idx string) error {
 	if tmpl == nil {
 		return fmt.Errorf("add page: template is nil")
 	}
 	if p.maroto == nil {
 		return fmt.Errorf("add page: maroto is not initialized (call BuildMaroto first)")
 	}
-	pgNew, err := p.Page(tmpl, kod, ser, idx)
+	pgNew, err := p.Page(tmpl, kod, party, idx)
 	if err != nil {
 		return fmt.Errorf("build page: %w", err)
 	}

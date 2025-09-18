@@ -28,7 +28,7 @@ type Configuration struct {
 	MarkTemplate    string `mapstructure:"marktemplate" toml:"marktemplate" json:"marktemplate"`
 	PackTemplate    string `mapstructure:"packtemplate" toml:"packtemplate" json:"packtemplate"`
 	Party           string `mapstructure:"party" toml:"party" json:"party"`
-	ChunkSize       int64  `mapstructure:"chunksize" toml:"chunksize" json:"chunksize"`
+	ChunkSize       int    `mapstructure:"chunksize" toml:"chunksize" json:"chunksize"`
 	// Application AppConfiguration `mapstructure:"application" toml:"application" json:"application"`
 	Layouts LayoutConfiguration `mapstructure:"layouts" toml:"layouts" json:"layouts"`
 	// описатели БД рефактор

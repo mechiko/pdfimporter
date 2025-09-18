@@ -48,7 +48,7 @@ func (a *GuiApp) makeBindings() {
 		if !ok {
 			a.Logger().Errorf("bad type model aplication")
 		}
-		model.ChunkSize = chunkSize
+		model.ChunkSize = int(chunkSize)
 		reductor.Instance().SetModel(model, false)
 	}))
 

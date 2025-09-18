@@ -68,12 +68,12 @@ func New(app domain.Apper) (*GuiApp, error) {
 		Apper: app,
 		// pdf:   p,
 	}
-	a.logCh = make(chan LogMsg, 10)
+	a.logCh = make(chan LogMsg, 100)
 	a.stateFinish = make(chan struct{})
 	a.stateFinishDebug = make(chan struct{})
 	a.stateStart = make(chan struct{})
 	a.icon = tk.NewPhoto(tk.Data(ico))
-	a.progresCh = make(chan float64, 100)
+	a.progresCh = make(chan float64, 1000)
 	a.logClear = make(chan struct{})
 	a.stateSelectedCisFile = make(chan string, 2)
 	a.stateSelectedKiguFile = make(chan string, 2)
@@ -99,6 +99,9 @@ func New(app domain.Apper) (*GuiApp, error) {
 	tk.NewTicker(tick, a.tick)
 	if model.FileCIS != "" {
 		go a.openFileCis(model.FileCIS)
+	}
+	if model.FileKIGU != "" {
+		go a.openFileKigu(model.FileKIGU)
 	}
 	return a, nil
 }
@@ -167,13 +170,23 @@ func (a *GuiApp) tick() {
 	case file := <-a.stateSelectedCisFile:
 		label := ""
 		if file != "" {
-			label = filepath.Base(file)
+			base := filepath.Base(file)
+			if len(base) > 50 {
+				label = fmt.Sprintf("%.30s...%s", base, base[len(base)-10:])
+			} else {
+				label = base
+			}
 		}
 		a.fileLblCis.Configure(tk.Txt(label))
 	case file := <-a.stateSelectedKiguFile:
 		label := ""
 		if file != "" {
-			label = filepath.Base(file)
+			base := filepath.Base(file)
+			if len(base) > 50 {
+				label = fmt.Sprintf("%.30s...%s", base, base[len(base)-10:])
+			} else {
+				label = base
+			}
 		}
 		a.fileLblKigu.Configure(tk.Txt(label))
 	case a.isProcess = <-a.stateIsProcess:

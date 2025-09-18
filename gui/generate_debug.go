@@ -90,7 +90,7 @@ func (a *GuiApp) generateDebug() {
 		logerr("gui generate", err)
 		return
 	}
-	fileName, err := pdfGenerator.Document(model, a.progresCh)
+	err = pdfGenerator.Document(model, a.progresCh)
 	if err != nil {
 		logerr("генерация пдф тест", err)
 		if modelStore.FileCIS != "" {
@@ -98,11 +98,11 @@ func (a *GuiApp) generateDebug() {
 		}
 		return
 	}
-	a.SendLog(fileName)
-	utility.OpenFileInShell(fileName)
-	if modelStore.FileCIS != "" {
-		a.stateSelectedCisFile <- modelStore.FileCIS
-		return
-	}
+	// a.SendLog(fileName)
+	// utility.OpenFileInShell(fileName)
+	// if modelStore.FileCIS != "" {
+	// 	a.stateSelectedCisFile <- modelStore.FileCIS
+	// 	return
+	// }
 	a.stateFinishDebug <- struct{}{}
 }

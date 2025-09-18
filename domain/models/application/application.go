@@ -2,6 +2,7 @@ package application
 
 import (
 	"fmt"
+	"path/filepath"
 	"pdfimporter/domain"
 )
 
@@ -12,6 +13,8 @@ type Application struct {
 	Debug   bool
 	License string
 
+	FileBaseName    string
+	FileBasePath    string
 	FileCIS         string
 	FileKIGU        string
 	MarkTemplate    string
@@ -20,7 +23,7 @@ type Application struct {
 	SsccStartNumber int
 	PerPallet       int
 	Party           string
-	ChunkSize       int64
+	ChunkSize       int
 }
 
 var _ domain.Modeler = (*Application)(nil)
@@ -102,4 +105,14 @@ func (a *Application) Model() domain.Model {
 }
 
 func (a *Application) Reset() {
+}
+
+func (a *Application) SetFileBase(file string) {
+	if file == "" {
+		file = "маркировка.pdf"
+	}
+	a.FileBasePath = filepath.Dir(file)
+	filename := filepath.Base(file)
+	extension := filepath.Ext(file)
+	a.FileBaseName = filename[:len(filename)-len(extension)]
 }

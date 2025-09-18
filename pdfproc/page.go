@@ -15,7 +15,7 @@ import (
 	"github.com/mechiko/maroto/v2/pkg/core"
 )
 
-func (p *pdfProc) Page(t *domain.MarkTemplate, kod string, ser string, idx string) (core.Page, error) {
+func (p *pdfProc) Page(t *domain.MarkTemplate, kod string, party string, idx string) (core.Page, error) {
 	pg := page.New()
 	rowKeys := make([]string, 0, len(t.Rows))
 	for k := range t.Rows {
@@ -88,27 +88,27 @@ func (p *pdfProc) Page(t *domain.MarkTemplate, kod string, ser string, idx strin
 					}
 				}
 				if rowSingle.Value != "" {
-					value := strings.ReplaceAll(rowSingle.Value, "@ser", ser)
+					value := strings.ReplaceAll(rowSingle.Value, "@party", party)
 					value = strings.ReplaceAll(value, "@idx", idx)
-					if len(kod) == 20 {
-						kod1 := fmt.Sprintf("(%s)%s", kod[:2], kod[2:])
-						value = strings.ReplaceAll(value, "@kod", kod1)
-					} else {
-						value = strings.ReplaceAll(value, "@kod", kod)
-					}
+					// if len(kod) == 20 {
+					// 	kod1 := fmt.Sprintf("(%s)%s", kod[:2], kod[2:])
+					// 	value = strings.ReplaceAll(value, "@kod", kod1)
+					// } else {
+					// 	value = strings.ReplaceAll(value, "@kod", kod)
+					// }
 					cols[i].Add(text.New(value, rowSingle.PropsText()))
 				} else {
 					if len(rowSingle.Values) > 0 {
 						comps := make([]core.Component, 0)
 						for _, val := range rowSingle.Values {
-							value := strings.ReplaceAll(val.Value, "@ser", ser)
+							value := strings.ReplaceAll(val.Value, "@party", party)
 							value = strings.ReplaceAll(value, "@idx", idx)
-							if len(kod) == 20 {
-								kod1 := fmt.Sprintf("(%s)%s", kod[:2], kod[2:])
-								value = strings.ReplaceAll(value, "@kod", kod1)
-							} else {
-								value = strings.ReplaceAll(value, "@kod", kod)
-							}
+							// if len(kod) == 20 {
+							// 	kod1 := fmt.Sprintf("(%s)%s", kod[:2], kod[2:])
+							// 	value = strings.ReplaceAll(value, "@kod", kod1)
+							// } else {
+							// 	value = strings.ReplaceAll(value, "@kod", kod)
+							// }
 							comps = append(comps, text.New(value, val.PropsText()))
 						}
 						cols[i].Add(comps...)

@@ -7,49 +7,47 @@
       {
         "row_height": 15,
         "col_width": 3,
-		"left": 0,
-		"top": 0,
+        "left": 0,
+        "top": 0,
         "percent": 100,
         "center": false,
-		"just_reference_width": true,
+        "just_reference_width": true,
         "data_matrix": "insert",
         "image_debug": false
       },
       {
         "row_height": 12,
         "col_width": 9,
-		"top": 1,
-		"value": "",
-		"values": [
-		{
-			"top": 2,
-			"value": "ПИВНОЙ НАПИТОК СВЕТЛЫЙ ФИЛЬТРОВАННЫЙ ПАСТЕРИЗОВАННЫЙ «КОРОНА ЭКСТРА» (CORONA EXTRA)",
-			"style": "B",
-			"font_size": 7,
-			"align": "C"
-		},
-		{
-			"top": 0.3,
-			"value": "Б1             ",
-			"style": "B",
-			"font_size": 4,
-			"align": "R"
-		},
-		{
-			"top": 0,
-			"value": "00001",
-			"style": "",
-			"font_size": 5,
-			"align": "R"
-		}
-		],
+        "top": 1,
+        "values": [
+          {
+            "top": 2,
+            "value": "ПИВНОЙ НАПИТОК СВЕТЛЫЙ ФИЛЬТРОВАННЫЙ ПАСТЕРИЗОВАННЫЙ",
+            "style": "B",
+            "font_size": 5.4,
+            "align": "C"
+          },
+          {
+            "top": 5,
+            "value": "«КОРОНА ЭКСТРА» (CORONA EXTRA)",
+            "style": "B",
+            "font_size": 8,
+            "align": "C"
+          },
+          {
+            "top": 9,
+            "value": "@party @idx",
+            "style": "B",
+            "font_size": 6,
+            "align": "R"
+          }
+        ],
         "style": "B",
-		"font_size": 6.5,
-        "align": "C",
-        "top": 0
+        "font_size": 6.5,
+        "align": "C"
       }
     ],
-	"02": [
+    "02": [
       {
         "row_height": 1.5,
         "col_width": 3,
@@ -63,7 +61,7 @@
         "row_height": 1.5,
         "col_width": 9,
         "value": "\"CERVECERIA MODELIO S. DE R.L. DE C.V. \u0026 CO\" СЕРВЕСЕРИЯ МОДЕЛО С. ДЕ Р.Л. ДЕ С.В.",
-		"style": "B",
+        "style": "B",
         "font_size": 3.5,
         "align": "L",
         "top": 0.1
@@ -78,7 +76,7 @@
         "top": 0
       }
     ],
-	"07": [
+    "07": [
       {
         "value": "ИМПОРТЕР И ОРГАНИЗАЦИЯ УПОЛНОМОЧЕННАЯ ПРИНИМАТЬ ПРЕТЕНЗИИ ОТ ПОТРЕБИТЕЛЕЙ НА ТЕРРИТОРИИ РФ:ООО «ЛЮКАТ-ПЕКАРНИ», РОССИЯ, САНКТ-ПЕТЕРБУРГ, 191167, НАБ.ОБВОДНОГО КАНАЛА, Д. 21, ЛИТЕР А, ПОМ. 1-Н/1, ЭТАЖ 1, ТЕЛ.: +7 (812) 429-39-46, E-MAIL: LUCATE-IMPORT@MAIL.RU;",
         "style": "B",
@@ -87,7 +85,7 @@
         "top": 0.1
       }
     ],
-	"08": [
+    "08": [
       {
         "value": "Хранить в вентилируемых, не имеющих посторонних запахов помещениях, исключающих воздействие прямого солнечного света, при температуре от +2°С до +25°С и относительной влажности не более 85%",
         "style": "B",
@@ -101,36 +99,36 @@
         "row_height": 1
       }
     ],
-	"13": [
+    "13": [
       {
         "col_width": 1,
         "row_height": 6
-	  },
+      },
       {
         "col_width": 10,
         "row_height": 7,
-		"values": [
-		{
-			"value": "СРОК ГОДНОСТИ 365 ДНЕЙ ПРИ СОБЛЮДЕНИИ",
-			"style": "B",
-			"font_size": 7,
-			"align": "L"
-		},
-		{
-			"top": 2.5,
-			"value": "УСЛОВИЙ ХРАНЕНИЯ И ТРАНСПОРТИРОВАНИЯ",
-			"style": "B",
-			"font_size": 7,
-			"align": "L"
-		}
-		]
+        "values": [
+          {
+            "value": "СРОК ГОДНОСТИ 365 ДНЕЙ ПРИ СОБЛЮДЕНИИ",
+            "style": "B",
+            "font_size": 7,
+            "align": "L"
+          },
+          {
+            "top": 2.5,
+            "value": "УСЛОВИЙ ХРАНЕНИЯ И ТРАНСПОРТИРОВАНИЯ",
+            "style": "B",
+            "font_size": 7,
+            "align": "L"
+          }
+        ]
       },
       {
         "col_width": 1,
         "row_height": 7
-	  }
+      }
     ],
-	"14": [
+    "14": [
       {
         "value": "Количество: 24 бут. Х 0,33л",
         "style": "B",
@@ -138,7 +136,7 @@
         "align": "L"
       }
     ],
-	"15": [
+    "15": [
       {
         "value": "Дата розлива: 27.04.2025",
         "style": "B",
@@ -146,7 +144,7 @@
         "align": "L"
       }
     ],
-	"16": [
+    "16": [
       {
         "value": "Употребить до: 27.04.2025",
         "style": "B",
@@ -154,7 +152,7 @@
         "align": "L"
       }
     ],
-	"17": [
+    "17": [
       {
         "value": "Номер партии соответствует дате розлива.",
         "style": "B",
@@ -162,21 +160,21 @@
         "align": "L"
       }
     ],
-	"18": [
+    "18": [
       {
         "col_width": 11,
-		"row_height": 15,
-		"top": 1,
+        "row_height": 15,
+        "top": 1,
         "image": "packpict",
         "image_ext": "jpg",
         "center": false,
         "image_debug": false,
-		"just_reference_width": true,
+        "just_reference_width": true,
         "percent": 100
       },
       {
         "col_width": 1,
-		"row_height": 1
+        "row_height": 1
       }
     ]
   }
