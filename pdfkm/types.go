@@ -6,6 +6,7 @@ import (
 	"pdfimporter/domain"
 	"pdfimporter/domain/models/application"
 	"pdfimporter/reductor"
+	"slices"
 
 	"github.com/mechiko/utility"
 )
@@ -20,12 +21,22 @@ type Pdf struct {
 	PackOrder          []string
 	Packs              map[string]*utility.CisInfo
 	Pallet             map[string][]*utility.CisInfo
+	Chunks             map[string]*ChunkPack
+	OrderChunks        []string
 	lastSSCC           int
 	warnings           []string
 	errors             []string
 	assets             *assets.Assets
 	templateDatamatrix *domain.MarkTemplate
 	templatePack       *domain.MarkTemplate
+	iChunkAll          int
+	iChunkCis          int
+	iChunkKigu         int
+}
+
+type ChunkPack struct {
+	Cis  []*utility.CisInfo
+	Kigu []*utility.CisInfo
 }
 
 func New(app domain.Apper) (p *Pdf, err error) {
@@ -41,6 +52,7 @@ func New(app domain.Apper) (p *Pdf, err error) {
 		PackOrder:          make([]string, 0),
 		templateDatamatrix: nil,
 		templatePack:       nil,
+		Chunks:             make(map[string]*ChunkPack),
 	}
 	p.Reset()
 	p.assets, err = assets.New("assets")
@@ -118,4 +130,13 @@ func GetModel() (*application.Application, error) {
 		return nil, fmt.Errorf("model is not of type *application.Application")
 	}
 	return model, nil
+}
+
+func (k *Pdf) Files() []string {
+	keys := make([]string, 0, len(k.Chunks))
+	for k2 := range k.Chunks {
+		keys = append(keys, k2)
+	}
+	slices.Sort(keys)
+	return keys
 }

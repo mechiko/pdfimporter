@@ -58,17 +58,17 @@ func (a *GuiApp) makeInputs(model *application.Application) {
 	if fileCis != "" {
 		base := filepath.Base(fileCis)
 		if len(base) > 50 {
-			labelCis = fmt.Sprintf("%.40s...%s", base, base[len(base)-10:])
+			labelCis = fmt.Sprintf("%.30s...%s", base, base[len(base)-10:])
 		} else {
 			labelCis = base
 		}
 	}
-	fileKigu := model.FileCIS
+	fileKigu := model.FileKIGU
 	labelKigu := ""
 	if fileKigu != "" {
 		base := filepath.Base(fileKigu)
 		if len(base) > 50 {
-			labelKigu = fmt.Sprintf("%.40s...%s", base, base[len(base)-10:])
+			labelKigu = fmt.Sprintf("%.30s...%s", base, base[len(base)-10:])
 		} else {
 			labelKigu = base
 		}
@@ -76,6 +76,8 @@ func (a *GuiApp) makeInputs(model *application.Application) {
 	a.fileLblCis = a.inputFrame.TLabel(tk.Txt(labelCis))
 	a.fileLblKigu = a.inputFrame.TLabel(tk.Txt(labelKigu))
 	a.progres = a.inputFrame.TProgressbar()
+	a.party = a.inputFrame.TEntry(tk.Textvariable(model.Party))
+	a.chunkSize = a.inputFrame.TEntry(tk.Textvariable(fmt.Sprintf("%d", model.ChunkSize)))
 }
 
 func (a *GuiApp) makeButtons() {

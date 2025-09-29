@@ -2,6 +2,7 @@ package application
 
 import (
 	"fmt"
+	"path/filepath"
 	"pdfimporter/domain"
 )
 
@@ -12,13 +13,17 @@ type Application struct {
 	Debug   bool
 	License string
 
+	FileBaseName    string
+	FileBasePath    string
 	FileCIS         string
 	FileKIGU        string
 	MarkTemplate    string
 	PackTemplate    string
-	SsccPrefix      string `json:"ssccprefix"`
-	SsccStartNumber int    `json:"ssccstartnumber"`
-	PerPallet       int    `json:"perpallet"`
+	SsccPrefix      string
+	SsccStartNumber int
+	PerPallet       int
+	Party           string
+	ChunkSize       int
 }
 
 var _ domain.Modeler = (*Application)(nil)
@@ -58,6 +63,14 @@ func (a *Application) SyncToStore(app domain.Apper) (err error) {
 	if err != nil {
 		return fmt.Errorf("model:application save packtemplate to store error %w", err)
 	}
+	err = app.SetOptions("party", a.Party)
+	if err != nil {
+		return fmt.Errorf("model:application save party to store error %w", err)
+	}
+	err = app.SetOptions("chunksize", a.ChunkSize)
+	if err != nil {
+		return fmt.Errorf("model:application save chunksize to store error %w", err)
+	}
 	if err := app.SaveAllOptions(); err != nil {
 		return fmt.Errorf("model:application sync to store error %w", err)
 	}
@@ -76,6 +89,8 @@ func (a *Application) ReadState(app domain.Apper) (err error) {
 	a.PerPallet = opts.PerPallet
 	a.MarkTemplate = opts.MarkTemplate
 	a.PackTemplate = opts.PackTemplate
+	a.Party = opts.Party
+	a.ChunkSize = opts.ChunkSize
 	return nil
 }
 
@@ -90,4 +105,14 @@ func (a *Application) Model() domain.Model {
 }
 
 func (a *Application) Reset() {
+}
+
+func (a *Application) SetFileBase(file string) {
+	if file == "" {
+		file = "маркировка.pdf"
+	}
+	a.FileBasePath = filepath.Dir(file)
+	filename := filepath.Base(file)
+	extension := filepath.Ext(file)
+	a.FileBaseName = filename[:len(filename)-len(extension)]
 }

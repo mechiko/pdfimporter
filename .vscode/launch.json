@@ -16,8 +16,9 @@
           "CGO_ENABLED": "1"
         },
         "args": [
-          // "-file", "${workspaceFolder}/.DATA/Заказ_00000000376_Пиво светлое пастеризованное фильтрованное «Харп Лагер»_ГТИН_05000213100066_42768.csv"
-          // "-local"
+          "-filecis", "${workspaceFolder}/.DATA/Заказ_00000000377_Пиво светлое пастеризованное фильтрованное «Харп Лагер»_ГТИН_05000213100066_2376.csv",
+          "-filekigu", "${workspaceFolder}/.DATA/KIGU.csv",
+          // "-home"
         ],
         "buildFlags": ""
         },

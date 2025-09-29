@@ -22,6 +22,11 @@ func (a *GuiApp) generate() {
 		a.SendError(fmt.Sprintf("gui generate %s", err.Error()))
 		return
 	}
+	if err := model.SyncToStore(a); err != nil {
+		a.Logger().Errorf("ошибка синхронизации модели в настройки программы %s", err.Error())
+		a.SendError(fmt.Sprintf("ошибка синхронизации модели в настройки программы %s", err.Error()))
+		return
+	}
 	// сохраняем модель по ошибке
 	logerr := func(s string, err error) {
 		if err := reductor.Instance().SetModel(model, false); err != nil {
@@ -70,20 +75,48 @@ func (a *GuiApp) generate() {
 			return
 		}
 		a.SendLog(fmt.Sprintf("считано %d КИГУ", len(pdfGenerator.Kigu)))
-		if err := pdfGenerator.GeneratePack(model); err != nil {
-			logerr("генерация пдф: упаковка", err)
+		// if err := pdfGenerator.GeneratePack(model); err != nil {
+		// 	logerr("генерация пдф: упаковка", err)
+		// 	return
+		// }
+		// запрашиваем имя выходного файла и пути
+		fileNamePdf := utility.TimeFileName("Этикетки") + ".pdf"
+		fileNamePdfSelect, err := utility.DialogSaveFile(utility.Pdf, fileNamePdf, ".")
+		if err != nil {
+			logerr("генерация пдф: выбор пути для сохранения PDF", err)
+		} else if fileNamePdfSelect != "" {
+			fileNamePdf = fileNamePdfSelect
+		}
+		model.SetFileBase(fileNamePdf)
+		if err := reductor.Instance().SetModel(model, false); err != nil {
+			a.Logger().Errorf("генерация пдф: ошибка сохранения модели %s", err.Error())
+			a.SendError(fmt.Sprintf("генерация пдф: ошибка сохранения модели %s", err.Error()))
 			return
 		}
-		fileName, err := pdfGenerator.Document(model, a.progresCh)
+		// сплит на блоки по chunksize
+		err = pdfGenerator.ChunkSplit(model)
 		if err != nil {
-			logerr("генерация пдф: документ", err)
+			logerr("генерация пдф: сплит на блоки", err)
 			if model != nil && model.FileCIS != "" {
 				a.stateSelectedCisFile <- model.FileCIS
 			}
 			return
 		}
-		a.SendLog(fileName)
-		fileNameCsv := utility.TimeFileName("agregation_packs") + ".csv"
+
+		// здесь генерируем документ ПДФ целиком
+		err = pdfGenerator.Document(model, a.progresCh)
+		if err != nil {
+			logerr("генерация пдф: документ ошибка", err)
+			if model != nil && model.FileCIS != "" {
+				a.stateSelectedCisFile <- model.FileCIS
+			}
+			return
+		}
+		a.SendLog("сгенерированы файлы:")
+		for _, file := range pdfGenerator.Files() {
+			a.SendLog(file)
+		}
+		fileNameCsv := utility.TimeFileName("agr_packs_"+model.FileBaseName) + ".csv"
 		fileCsvSelect, err := utility.DialogSaveFile(utility.Csv, fileNameCsv, ".")
 		if err != nil {
 			logerr("генерация пдф: выбор для сохранение файла агрегации", err)
@@ -94,9 +127,6 @@ func (a *GuiApp) generate() {
 			return
 		} else {
 			a.SendLog(csvName)
-		}
-		if a.DebugMode() {
-			utility.OpenFileInShell(fileName)
 		}
 	} else {
 		fileName, err := pdfGenerator.DocumentWithoutPack(model, a.progresCh)

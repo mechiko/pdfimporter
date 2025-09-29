@@ -7,6 +7,8 @@ ssccstartnumber = 1
 perpallet = 24
 marktemplate = ""
 packtemplate = ""
+chunksize = 250
+party="Б1"
 
 [layouts]
 timelayout = "2006-01-02T15:04:05-0700"
@@ -25,6 +27,8 @@ type Configuration struct {
 	PerPallet       int    `mapstructure:"perpallet" toml:"perpallet" json:"perpallet"`
 	MarkTemplate    string `mapstructure:"marktemplate" toml:"marktemplate" json:"marktemplate"`
 	PackTemplate    string `mapstructure:"packtemplate" toml:"packtemplate" json:"packtemplate"`
+	Party           string `mapstructure:"party" toml:"party" json:"party"`
+	ChunkSize       int    `mapstructure:"chunksize" toml:"chunksize" json:"chunksize"`
 	// Application AppConfiguration `mapstructure:"application" toml:"application" json:"application"`
 	Layouts LayoutConfiguration `mapstructure:"layouts" toml:"layouts" json:"layouts"`
 	// описатели БД рефактор
