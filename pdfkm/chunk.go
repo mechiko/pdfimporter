@@ -7,6 +7,9 @@ import (
 )
 
 func (k *Pdf) ChunkSplit(model *application.Application) error {
+	if model.ChunkSize <= 0 || model.PerPallet <= 0 {
+		return fmt.Errorf("некорректные параметры разбиения: ChunkSize=%d, PerPallet=%d", model.ChunkSize, model.PerPallet)
+	}
 	countCisChunk := model.ChunkSize * model.PerPallet
 	countCIS := 0
 	countKIGU := 0

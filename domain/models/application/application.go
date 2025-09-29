@@ -63,9 +63,6 @@ func (a *Application) SyncToStore(app domain.Apper) (err error) {
 	if err != nil {
 		return fmt.Errorf("model:application save packtemplate to store error %w", err)
 	}
-	if err := app.SaveAllOptions(); err != nil {
-		return fmt.Errorf("model:application sync to store error %w", err)
-	}
 	err = app.SetOptions("party", a.Party)
 	if err != nil {
 		return fmt.Errorf("model:application save party to store error %w", err)
@@ -73,6 +70,9 @@ func (a *Application) SyncToStore(app domain.Apper) (err error) {
 	err = app.SetOptions("chunksize", a.ChunkSize)
 	if err != nil {
 		return fmt.Errorf("model:application save chunksize to store error %w", err)
+	}
+	if err := app.SaveAllOptions(); err != nil {
+		return fmt.Errorf("model:application sync to store error %w", err)
 	}
 	return err
 }

@@ -81,9 +81,10 @@ func (a *GuiApp) generate() {
 		// }
 		// запрашиваем имя выходного файла и пути
 		fileNamePdf := utility.TimeFileName("Этикетки") + ".pdf"
-		fileNamePdfSelect, err := utility.DialogSaveFile(utility.Csv, fileNamePdf, ".")
-		if err == nil {
-			logerr("генерация пдф: выбор для сохранение файла агрегации", err)
+		fileNamePdfSelect, err := utility.DialogSaveFile(utility.Pdf, fileNamePdf, ".")
+		if err != nil {
+			logerr("генерация пдф: выбор пути для сохранения PDF", err)
+		} else if fileNamePdfSelect != "" {
 			fileNamePdf = fileNamePdfSelect
 		}
 		model.SetFileBase(fileNamePdf)

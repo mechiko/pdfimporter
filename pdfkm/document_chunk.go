@@ -25,7 +25,13 @@ func (k *Pdf) DocumentChunk(model *application.Application, ch chan float64, ste
 	cises := chunk.Cis
 	kigus := chunk.Kigu
 	iKigu := 0
-	party := fmt.Sprintf("%.2s", model.Party)
+	party := model.Party
+	if r := []rune(party); len(r) > 2 {
+		party = string(r[:2])
+	}
+	if model.PerPallet <= 0 {
+		return fmt.Errorf("PerPallet must be > 0, got %d", model.PerPallet)
+	}
 	packs := slices.Chunk(cises, model.PerPallet)
 	for ciss := range packs {
 		// генерируем км упаковки

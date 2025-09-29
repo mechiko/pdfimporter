@@ -29,27 +29,38 @@ func (a *GuiApp) makeBindings() {
 	// }))
 	tk.Bind(a.party, "<KeyRelease>", tk.Command(func(e *tk.Event) {
 		party := a.party.Textvariable()
-		mdl, _ := reductor.Instance().Model(domain.Application)
+		mdl, err := reductor.Instance().Model(domain.Application)
+		if err != nil {
+			a.Logger().Errorf("get model error: %v", err)
+			return
+		}
 		model, ok := mdl.(*application.Application)
 		if !ok {
-			a.Logger().Errorf("bad type model aplication")
+			a.Logger().Errorf("bad type model application")
 			return
 		}
 		model.Party = party
 		reductor.Instance().SetModel(model, false)
 	}))
 	tk.Bind(a.chunkSize, "<KeyRelease>", tk.Command(func(e *tk.Event) {
-		chunkSize, err := strconv.ParseInt(a.chunkSize.Textvariable(), 10, 64)
-		if err != nil {
+		txt := a.chunkSize.Textvariable()
+		n, err := strconv.Atoi(txt)
+		if err != nil || n <= 0 {
+			a.Logger().Warnf("invalid ChunkSize: %q", txt)
 			a.chunkSize.Configure(tk.Textvariable(""))
+			return
 		}
-		mdl, _ := reductor.Instance().Model(domain.Application)
-		model, ok := mdl.(*application.Application)
+		mdl, err := reductor.Instance().Model(domain.Application)
+		if err != nil {
+			a.Logger().Errorf("get model error: %v", err)
+			return
+		}
+		appModel, ok := mdl.(*application.Application)
 		if !ok {
-			a.Logger().Errorf("bad type model aplication")
+			a.Logger().Errorf("bad type model application")
+			return
 		}
-		model.ChunkSize = int(chunkSize)
-		reductor.Instance().SetModel(model, false)
+		appModel.ChunkSize = n
+		reductor.Instance().SetModel(appModel, false)
 	}))
-
 }
