@@ -6,6 +6,7 @@ import (
 	"pdfimporter/embeded"
 
 	"github.com/mechiko/maroto/v2"
+	"github.com/mechiko/utility"
 
 	"github.com/mechiko/maroto/v2/pkg/config"
 	"github.com/mechiko/maroto/v2/pkg/consts/fontstyle"
@@ -75,14 +76,14 @@ func (p *pdfProc) DocumentGenerate() (err error) {
 	return nil
 }
 
-func (p *pdfProc) AddPageByTemplate(tmpl *domain.MarkTemplate, kod string, party string, idx string) error {
+func (p *pdfProc) AddPageByTemplate(tmpl *domain.MarkTemplate, cis *utility.CisInfo, party string, idx string) error {
 	if tmpl == nil {
 		return fmt.Errorf("add page: template is nil")
 	}
 	if p.maroto == nil {
 		return fmt.Errorf("add page: maroto is not initialized (call BuildMaroto first)")
 	}
-	pgNew, err := p.Page(tmpl, kod, party, idx)
+	pgNew, err := p.Page(tmpl, cis, party, idx)
 	if err != nil {
 		return fmt.Errorf("build page: %w", err)
 	}

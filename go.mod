@@ -4,6 +4,8 @@ go 1.24.6
 
 require (
 	github.com/google/uuid v1.6.0
+	github.com/juliankoehn/barcode v0.0.0-20200418173355-72e133c1f72f
+	github.com/mechiko/barcode v1.0.0
 	github.com/mechiko/maroto/v2 v2.2.3
 	github.com/mechiko/utility v0.0.0-20250901141646-cc9c20f08412
 	github.com/spf13/viper v1.20.1
@@ -31,7 +33,6 @@ require (
 	github.com/jung-kurt/gofpdf v1.16.2 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
-	github.com/mechiko/barcode v1.0.0 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
 	github.com/pdfcpu/pdfcpu v0.11.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect

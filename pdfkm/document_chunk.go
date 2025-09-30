@@ -39,9 +39,7 @@ func (k *Pdf) DocumentChunk(model *application.Application, ch chan float64, ste
 			k.iChunkAll++
 			k.iChunkCis++
 			// генерируем КМ
-			fnc := cis.FNC1()
-			// ser := cis.Serial
-			if err := pdfDocument.AddPageByTemplate(k.templateDatamatrix, fnc, party, fmt.Sprintf("%06d", k.iChunkCis)); err != nil {
+			if err := pdfDocument.AddPageByTemplate(k.templateDatamatrix, cis, party, fmt.Sprintf("%06d", k.iChunkCis)); err != nil {
 				return fmt.Errorf("add datamatrix KM in page (idx %d): %w", k.iChunkAll, err)
 			}
 			if ch != nil {
@@ -58,9 +56,7 @@ func (k *Pdf) DocumentChunk(model *application.Application, ch chan float64, ste
 		}
 		k.PackOrder = append(k.PackOrder, kigu.Cis)
 		k.Pallet[kigu.Cis] = ciss
-		fnc := kigu.FNC1()
-		// ser := kigu.Serial
-		if err := pdfDocument.AddPageByTemplate(k.templatePack, fnc, party, fmt.Sprintf("%06d", k.iChunkKigu+1)); err != nil {
+		if err := pdfDocument.AddPageByTemplate(k.templatePack, kigu, party, fmt.Sprintf("%06d", k.iChunkKigu+1)); err != nil {
 			return fmt.Errorf("add pack in page (idx %d): %w", k.iChunkKigu+1, err)
 		}
 		iKigu++
@@ -69,37 +65,7 @@ func (k *Pdf) DocumentChunk(model *application.Application, ch chan float64, ste
 		}
 		k.iChunkKigu++
 	}
-	// for _, cis := range cises {
-	// 	k.iChunkAll++
-	// 	k.iChunkCis++
-	// 	// генерируем КМ
-	// 	fnc := cis.FNC1()
-	// 	// ser := cis.Serial
-	// 	if err := pdfDocument.AddPageByTemplate(k.templateDatamatrix, fnc, party, fmt.Sprintf("%06d", k.iChunkCis)); err != nil {
-	// 		return fmt.Errorf("add datamatrix KM in page (idx %d): %w", k.iChunkAll, err)
-	// 	}
-	// 	if ch != nil {
-	// 		ch <- step * float64(k.iChunkAll)
-	// 	}
-	// 	lastInPack := (k.iChunkCis % model.PerPallet) == 0
-	// 	if lastInPack {
-	// 		// генерируем KIGU
-	// 		if iKigu >= len(kigus) {
-	// 			return fmt.Errorf("ошибка индекса iKigu in page %d", iKigu)
-	// 		}
-	// 		kigu := kigus[iKigu]
-	// 		fnc := kigu.FNC1()
-	// 		// ser := kigu.Serial
-	// 		if err := pdfDocument.AddPageByTemplate(k.templatePack, fnc, party, fmt.Sprintf("%06d", k.iChunkKigu+1)); err != nil {
-	// 			return fmt.Errorf("add pack in page (idx %d): %w", k.iChunkKigu+1, err)
-	// 		}
-	// 		iKigu++
-	// 		if ch != nil {
-	// 			ch <- step * float64(k.iChunkAll)
-	// 		}
-	// 		k.iChunkKigu++
-	// 	}
-	// }
+
 	err = pdfDocument.DocumentGenerate()
 	if err != nil {
 		return fmt.Errorf("генерация пдф блока ошибка %w", err)

@@ -85,15 +85,12 @@
       },
       {
         "row_height": 5,
-        "col_width": 2
-      },
-      {
-        "row_height": 4,
-        "col_width": 3,
-        "image": "kmpict",
+        "col_width": 5,
+        "image": "all1",
         "image_ext": "jpg",
         "center": false,
         "image_debug": false,
+		"just_reference_width": true,
         "percent": 100,
         "align": "R"
       }
@@ -166,39 +163,49 @@
     ],
     "12": [
       {
-        "row_height": 1
+        "row_height": 0.5
       }
     ],
     "13": [
       {
-        "row_height": 7,
-        "col_width": 8,
+        "row_height": 8,
+        "col_width": 7,
         "values": [
           {
             "value": "ЧРЕЗМЕРНОЕ УПОТРЕБЛЕНИЕ АЛКОГОЛЯ",
             "style": "B",
-            "font_size": 8,
+            "font_size": 7,
             "align": "L"
           },
           {
             "top": 3,
             "value": "ВРЕДИТ ВАШЕМУ ЗДОРОВЬЮ.",
             "style": "B",
-            "font_size": 8,
+            "font_size": 7,
             "align": "L"
           }
         ]
       },
       {
-        "col_width": 4,
-        "left": 5,
-        "image": "all",
-        "image_ext": "jpg",
-        "center": false,
-        "image_debug": false,
-        "just_reference_width": true,
-        "percent": 100,
-        "align": "R"
+        "col_width": 5,
+        "values": [
+          {
+			"bar": "ean13svg",
+			"top": 0.3,
+			"type": "EAN 13",
+			"center": false,
+			"percent": 100,
+			"image_debug": false,
+			"align": "R"
+          },
+          {
+            "top": 6.2,
+            "value": "@ean",
+            "style": "B",
+            "font_size": 5,
+            "align": "C"
+          }
+        ]
       }
     ]
   }
