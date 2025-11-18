@@ -31,9 +31,8 @@ func (k *Pdf) DocumentWithoutPack(model *application.Application, ch chan float6
 		step = 99.0 / float64(totalItems)
 	}
 	for i, cis := range k.Cis {
-		fnc := cis.FNC1()
 		ser := cis.Serial
-		pdfDocument.AddPageByTemplate(k.templateDatamatrix, fnc, ser, fmt.Sprintf("%06d", i+1))
+		pdfDocument.AddPageByTemplate(k.templateDatamatrix, cis, ser, fmt.Sprintf("%06d", i+1))
 		if ch != nil {
 			ch <- step * float64(i)
 		}

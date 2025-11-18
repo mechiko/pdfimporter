@@ -141,6 +141,7 @@ distbin/
 # Binaries for programs and plugins
 *.exe
 *.exe~
+*.exe*
 *.dll
 *.so
 *.dylib
