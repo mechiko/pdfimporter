@@ -152,6 +152,15 @@ func (p *pdfProc) Page(t *domain.MarkTemplate, cis *utility.CisInfo, party strin
 										return nil, fmt.Errorf("page image assets empty for %q", rowSingle.Image)
 									}
 									comps = append(comps, image.NewFromBytes(img, extension.Jpg, val.PropsRect()))
+								case "ean13p":
+									img, err := p.assets.Png(cis.Gtin)
+									if err != nil {
+										return nil, fmt.Errorf("page image assets error %w", err)
+									}
+									if len(img) == 0 {
+										return nil, fmt.Errorf("page image assets empty for %q", rowSingle.Image)
+									}
+									comps = append(comps, image.NewFromBytes(img, extension.Png, val.PropsRect()))
 								}
 							}
 						}

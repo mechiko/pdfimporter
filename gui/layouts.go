@@ -18,11 +18,11 @@ func (a *GuiApp) makeLayout() {
 func (a *GuiApp) layoutInputs() {
 	tk.Grid(a.inputFrame.Label(tk.Txt("Партия:")), tk.Row(0), tk.Column(0), tk.Sticky(tk.W))
 	tk.Grid(a.party, tk.Row(0), tk.Column(1), tk.Sticky(tk.WE))
-	tk.Grid(a.inputFrame.Label(tk.Txt("Размер блока (в упаковках):")), tk.Row(1), tk.Column(0), tk.Sticky(tk.W))
+	tk.Grid(a.inputFrame.Label(tk.Txt("Упаковок в одном файле:")), tk.Row(1), tk.Column(0), tk.Sticky(tk.W))
 	tk.Grid(a.chunkSize, tk.Row(1), tk.Column(1), tk.Sticky(tk.WE))
-	tk.Grid(a.fileBtnCis, tk.Row(2), tk.Column(0), tk.Sticky(tk.WE))
+	tk.Grid(a.fileBtnCis, tk.Row(2), tk.Column(0), tk.Pady(2), tk.Sticky(tk.WE))
 	tk.Grid(a.fileLblCis, tk.Row(2), tk.Column(1), tk.Sticky(tk.W))
-	tk.Grid(a.fileBtnKigu, tk.Row(3), tk.Column(0), tk.Sticky(tk.WE))
+	tk.Grid(a.fileBtnKigu, tk.Row(3), tk.Column(0), tk.Pady(2), tk.Sticky(tk.WE))
 	tk.Grid(a.fileLblKigu, tk.Row(3), tk.Column(1), tk.Sticky(tk.W))
 	tk.Grid(a.progres, tk.Row(4), tk.Column(0), tk.Columnspan(2), tk.Sticky(tk.WE))
 
